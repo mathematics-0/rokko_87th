@@ -1,0 +1,90 @@
+{
+  "title": "学習ノート",
+  "subjects": [
+    {
+      "id": "math",
+      "name": "数学",
+      "icon": "📐",
+      "color": "#4F46E5",
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "方程式の基礎",
+          "file": "data/math/quiz_equations.json"
+        },
+        {
+          "type": "pdf",
+          "title": "第1章まとめ",
+          "file": "data/math/chapter1.pdf"
+        },
+        {
+          "type": "image",
+          "title": "数式一覧",
+          "file": "data/math/formulas.png"
+        }
+      ]
+    },
+    {
+      "id": "science",
+      "name": "理科",
+      "icon": "🔬",
+      "color": "#059669",
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "細胞の構造",
+          "file": "data/science/quiz_cells.json"
+        },
+        {
+          "type": "pdf",
+          "title": "植物のしくみ",
+          "file": "data/science/plants.pdf"
+        }
+      ]
+    },
+    {
+      "id": "english",
+      "name": "英語",
+      "icon": "🌍",
+      "color": "#F59E0B",
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "不規則動詞テスト",
+          "file": "data/english/quiz_irregular_verbs.json"
+        }
+      ]
+    },
+    {
+      "id": "japanese",
+      "name": "国語",
+      "icon": "📝",
+      "color": "#DC2626",
+      "materials": [
+        {
+          "type": "pdf",
+          "title": "古文単語帳",
+          "file": "data/japanese/classical_vocab.pdf"
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "name": "社会",
+      "icon": "🗾",
+      "color": "#7C3AED",
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "都道府県クイズ",
+          "file": "data/social/quiz_prefectures.json"
+        },
+        {
+          "type": "image",
+          "title": "日本地図",
+          "file": "data/social/japan_map.png"
+        }
+      ]
+    }
+  ]
+}

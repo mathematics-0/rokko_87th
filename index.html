@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>学習ノート</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --navy:    #1A1F5E;
+      --indigo:  #4F46E5;
+      --bg:      #EEF0FF;
+      --surface: #FFFFFF;
+      --amber:   #F59E0B;
+      --emerald: #059669;
+      --rose:    #DC2626;
+      --slate:   #64748B;
+      --border:  #E2E8F0;
+      --text:    #1E293B;
+      --radius:  12px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    button { cursor: pointer; font-family: inherit; border: none; }
+    a      { color: inherit; text-decoration: none; }
+
+    /* ── Site header ─────────────────────────────── */
+    .site-header {
+      background: var(--navy);
+      background-image:
+        linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+      background-size: 28px 28px;
+      color: #fff;
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,.2);
+    }
+    .site-header h1 {
+      font-size: 1.25rem;
+      font-weight: 900;
+      letter-spacing: -.02em;
+    }
+    .home-link {
+      margin-left: auto;
+      font-size: .85rem;
+      color: rgba(255,255,255,.6);
+      background: rgba(255,255,255,.08);
+      padding: 6px 14px;
+      border-radius: 20px;
+      transition: background .15s, color .15s;
+      cursor: pointer;
+    }
+    .home-link:hover { background: rgba(255,255,255,.16); color: #fff; }
+
+    /* ── Page container ──────────────────────────── */
+    .container {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 36px 20px 80px;
+    }
+
+    /* ── Loading / Error ──────────────────────────── */
+    .state-loading {
+      text-align: center;
+      padding: 80px 20px;
+      color: var(--slate);
+    }
+    .spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid var(--border);
+      border-top-color: var(--indigo);
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+      margin: 0 auto 16px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .error-box {
+      background: #FEF2F2;
+      border: 1.5px solid #FECACA;
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      color: #991B1B;
+      line-height: 1.8;
+      font-size: .93rem;
+    }
+    .error-box code {
+      background: rgba(0,0,0,.06);
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    /* ── Section title ───────────────────────────── */
+    .page-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+
+    /* ── Back button ─────────────────────────────── */
+    .back-btn {
+      background: none;
+      color: var(--slate);
+      font-size: .88rem;
+      margin-bottom: 22px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      border: 1.5px solid var(--border);
+      transition: background .15s, color .15s;
+    }
+    .back-btn:hover { background: var(--surface); color: var(--text); }
+
+    /* ── Subject grid ────────────────────────────── */
+    .subjects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(258px, 1fr));
+      gap: 16px;
+    }
+
+    .subject-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(0,0,0,.06);
+      cursor: pointer;
+      transition: transform .18s, box-shadow .18s;
+      border: 2px solid transparent;
+    }
+    .subject-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 28px rgba(0,0,0,.12);
+      border-color: var(--c, var(--indigo));
+    }
+    .subject-card-band {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.4rem;
+      background: var(--c, var(--indigo));
+      background-image: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 60%);
+    }
+    .subject-card-body {
+      padding: 14px 18px 18px;
+    }
+    .subject-card-name {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 9px;
+    }
+    .count-badges {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    .count-badge {
+      background: var(--bg);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: .76rem;
+      color: var(--slate);
+    }
+
+    /* ── Subject detail ──────────────────────────── */
+    .subject-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+    .subject-icon-lg {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      flex-shrink: 0;
+    }
+    .subject-header h2 {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--navy);
+    }
+
+    .material-section { margin-bottom: 30px; }
+    .mat-section-title {
+      font-size: .75rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1.5px solid var(--border);
+    }
+    .material-list { display: flex; flex-direction: column; gap: 8px; }
+
+    .material-item {
+      background: var(--surface);
+      border-radius: 10px;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
+      border: 1.5px solid transparent;
+      transition: border-color .15s, box-shadow .15s;
+    }
+    .material-item:hover {
+      border-color: var(--border);
+      box-shadow: 0 4px 14px rgba(0,0,0,.08);
+    }
+    .material-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .material-title { flex: 1; font-weight: 500; }
+
+    .open-btn {
+      background: var(--indigo);
+      color: #fff;
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: .85rem;
+      font-weight: 700;
+      flex-shrink: 0;
+      transition: background .15s;
+    }
+    .open-btn:hover { background: #3730A3; }
+
+    /* ── Quiz ────────────────────────────────────── */
+    .quiz-wrap { max-width: 680px; margin: 0 auto; }
+
+    .quiz-meta { margin-bottom: 22px; }
+    .quiz-title {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+    .progress-bar {
+      height: 7px;
+      background: var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 6px;
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--indigo), #818CF8);
+      border-radius: 4px;
+      transition: width .35s ease;
+    }
+    .progress-text {
+      font-size: .82rem;
+      color: var(--slate);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .quiz-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 28px;
+      box-shadow: 0 2px 14px rgba(0,0,0,.07);
+      margin-bottom: 14px;
+    }
+    .question-text {
+      font-size: 1.12rem;
+      font-weight: 700;
+      line-height: 1.75;
+      color: var(--navy);
+      margin-bottom: 22px;
+    }
+
+    .choices { display: flex; flex-direction: column; gap: 10px; }
+
+    .choice-btn {
+      background: var(--bg);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 13px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: .97rem;
+      font-weight: 500;
+      text-align: left;
+      width: 100%;
+      color: var(--text);
+      transition: background .14s, border-color .14s, transform .1s;
+    }
+    .choice-btn:not(:disabled):hover {
+      background: #EAEBFF;
+      border-color: var(--indigo);
+      transform: translateX(3px);
+    }
+    .choice-btn:disabled { cursor: default; }
+
+    .badge {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .85rem;
+      font-weight: 700;
+      color: #fff;
+      flex-shrink: 0;
+    }
+    .badge-a { background: var(--indigo); }
+    .badge-b { background: var(--amber); }
+    .badge-c { background: var(--emerald); }
+    .badge-d { background: #7C3AED; }
+
+    .choice-btn.correct              { background: #ECFDF5; border-color: var(--emerald); }
+    .choice-btn.correct .badge       { background: var(--emerald); }
+    .choice-btn.wrong                { background: #FEF2F2; border-color: var(--rose); }
+    .choice-btn.wrong .badge         { background: var(--rose); }
+    .choice-btn.correct-highlight    { background: #ECFDF5; border-color: var(--emerald); }
+    .choice-btn.correct-highlight .badge { background: var(--emerald); }
+
+    .explanation-box {
+      background: #FFFBEB;
+      border: 1.5px solid #FDE68A;
+      border-radius: 10px;
+      padding: 13px 18px;
+      font-size: .88rem;
+      line-height: 1.75;
+      margin-top: 14px;
+      color: #78350F;
+    }
+
+    .next-btn {
+      background: var(--indigo);
+      color: #fff;
+      border-radius: 10px;
+      padding: 14px;
+      font-size: .97rem;
+      font-weight: 700;
+      width: 100%;
+      transition: background .15s;
+    }
+    .next-btn:hover { background: #3730A3; }
+
+    /* ── Result screen ───────────────────────────── */
+    .result-card {
+      background: var(--surface);
+      border-radius: var(--radius);
+      padding: 48px 32px;
+      text-align: center;
+      box-shadow: 0 2px 14px rgba(0,0,0,.07);
+    }
+    .result-emoji { font-size: 3rem; margin-bottom: 12px; }
+    .result-score {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 4.5rem;
+      font-weight: 700;
+      color: var(--navy);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .result-score-denom { font-size: 1.8rem; color: var(--slate); }
+    .result-pct {
+      font-size: .95rem;
+      color: var(--slate);
+      margin-bottom: 14px;
+    }
+    .result-msg {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 36px;
+    }
+    .result-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-retry {
+      background: var(--indigo);
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: .93rem;
+      font-weight: 700;
+      transition: background .15s;
+    }
+    .btn-retry:hover { background: #3730A3; }
+    .btn-back {
+      background: var(--bg);
+      color: var(--text);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 12px 28px;
+      font-size: .93rem;
+      font-weight: 700;
+      transition: background .15s;
+    }
+    .btn-back:hover { background: var(--border); }
+
+    /* ── Viewer ──────────────────────────────────── */
+    .viewer-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 16px;
+    }
+    .pdf-frame {
+      width: 100%;
+      height: 75vh;
+      border: none;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 16px rgba(0,0,0,.12);
+      display: block;
+    }
+    .image-viewer {
+      text-align: center;
+    }
+    .image-viewer img {
+      max-width: 100%;
+      border-radius: var(--radius);
+      box-shadow: 0 2px 16px rgba(0,0,0,.12);
+    }
+
+    /* ── Responsive ──────────────────────────────── */
+    @media (max-width: 580px) {
+      .container { padding: 24px 14px 60px; }
+      .subjects-grid { grid-template-columns: 1fr; }
+      .quiz-card { padding: 20px 16px; }
+      .result-card { padding: 36px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <span style="font-size:1.3rem">📚</span>
+  <h1 id="site-title">学習ノート</h1>
+  <span class="home-link" id="home-link">ホームへ</span>
+</header>
+
+<main id="app" class="container">
+  <div class="state-loading">
+    <div class="spinner"></div>
+    <p>読み込み中...</p>
+  </div>
+</main>
+
+<script>
+  // ── State ──────────────────────────────────────────────
+  const S = {
+    subjects: [],
+    siteTitle: '学習ノート',
+    quiz: null,  // { data, file, subjectId, index, answers, phase }
+  };
+
+  const app  = document.getElementById('app');
+  const titleEl = document.getElementById('site-title');
+  const homeLink = document.getElementById('home-link');
+  homeLink.addEventListener('click', () => { location.hash = '#/'; });
+
+  // ── Boot ───────────────────────────────────────────────
+  async function init() {
+    window.addEventListener('hashchange', route);
+    try {
+      const res  = await fetch('data/subjects.json');
+      const data = await res.json();
+      S.subjects   = data.subjects   || [];
+      S.siteTitle  = data.title      || '学習ノート';
+      titleEl.textContent = S.siteTitle;
+      document.title      = S.siteTitle;
+    } catch {
+      S.subjects = null; // signals error
+    }
+    route();
+  }
+
+  // ── Router ─────────────────────────────────────────────
+  function route() {
+    const h = location.hash || '#/';
+    if (h === '#/' || h === '#') {
+      renderHome();
+    } else if (h.startsWith('#/subject/')) {
+      renderSubject(h.slice(10));
+    } else if (h.startsWith('#/quiz/')) {
+      const file = h.slice(7);
+      // Only reload if different file or no current quiz
+      if (!S.quiz || S.quiz.file !== file) {
+        loadQuiz(file);
+      } else {
+        renderQuizQuestion();
+      }
+    } else if (h.startsWith('#/view/')) {
+      renderViewer(h.slice(7));
+    } else {
+      renderHome();
+    }
+  }
+
+  // ── Helpers ────────────────────────────────────────────
+  const TYPE_ICON  = { pdf:'📄', quiz:'✏️', image:'🖼️' };
+  const TYPE_LABEL = { pdf:'PDF', quiz:'クイズ', image:'画像' };
+  const BADGES     = ['A','B','C','D'];
+  const BADGE_CLS  = ['badge-a','badge-b','badge-c','badge-d'];
+
+  function findSubjectByFile(file) {
+    return S.subjects?.find(s => s.materials?.some(m => m.file === file));
+  }
+
+  function backHashFor(file) {
+    const s = findSubjectByFile(file);
+    return s ? `#/subject/${s.id}` : '#/';
+  }
+
+  function scoreMsg(pct) {
+    if (pct === 100) return { emoji:'🎉', msg:'パーフェクト！完璧です！' };
+    if (pct >= 80)   return { emoji:'👏', msg:'よくできました！' };
+    if (pct >= 60)   return { emoji:'💪', msg:'もう少しで完璧！' };
+    return               { emoji:'📖', msg:'復習してもう一度挑戦しよう！' };
+  }
+
+  // ── Views ──────────────────────────────────────────────
+
+  function renderHome() {
+    if (S.subjects === null) {
+      app.innerHTML = `
+        <div class="error-box">
+          <strong>⚠️ data/subjects.json が読み込めません</strong><br><br>
+          次のどちらかの方法で起動してください：<br>
+          <code>npx serve .</code>&nbsp; または &nbsp;<code>python3 -m http.server 8000</code><br><br>
+          ファイルを直接ブラウザで開いても動作しません（fetch API 制限）。<br>
+          詳しくは <code>README.md</code> をご確認ください。
+        </div>`;
+      return;
+    }
+
+    if (!S.subjects.length) {
+      app.innerHTML = `<div class="error-box">subjects.json に教科が登録されていません。README.md を参照してください。</div>`;
+      return;
+    }
+
+    const cards = S.subjects.map(s => {
+      const cnt = { pdf:0, quiz:0, image:0 };
+      (s.materials||[]).forEach(m => { if (m.type in cnt) cnt[m.type]++; });
+      const badges = Object.entries(cnt)
+        .filter(([,n]) => n > 0)
+        .map(([t,n]) => `<span class="count-badge">${TYPE_ICON[t]} ${TYPE_LABEL[t]} ${n}</span>`)
+        .join('');
+      return `
+        <div class="subject-card" style="--c:${s.color||'#4F46E5'}"
+             onclick="location.hash='#/subject/${s.id}'">
+          <div class="subject-card-band">${s.icon||'📚'}</div>
+          <div class="subject-card-body">
+            <div class="subject-card-name">${s.name}</div>
+            <div class="count-badges">${badges||'<span class="count-badge">教材なし</span>'}</div>
+          </div>
+        </div>`;
+    }).join('');
+
+    app.innerHTML = `
+      <div class="page-title">教科を選んでください</div>
+      <div class="subjects-grid">${cards}</div>`;
+  }
+
+  function renderSubject(id) {
+    const s = S.subjects?.find(s => s.id === id);
+    if (!s) { renderHome(); return; }
+
+    const ORDER = ['quiz','pdf','image'];
+    const NAMES = { quiz:'クイズ', pdf:'PDF ノート', image:'画像・図' };
+
+    const groups = {};
+    (s.materials||[]).forEach(m => {
+      (groups[m.type] ??= []).push(m);
+    });
+
+    const sections = ORDER.filter(t => groups[t]).map(t => {
+      const items = groups[t].map(m => {
+        const dest = m.type === 'quiz'
+          ? `#/quiz/${m.file}`
+          : `#/view/${m.file}`;
+        return `
+          <div class="material-item">
+            <span class="material-icon">${TYPE_ICON[m.type]}</span>
+            <span class="material-title">${m.title}</span>
+            <button class="open-btn" onclick="location.hash='${dest}'">開く</button>
+          </div>`;
+      }).join('');
+      return `
+        <div class="material-section">
+          <div class="mat-section-title">${NAMES[t]}</div>
+          <div class="material-list">${items}</div>
+        </div>`;
+    }).join('');
+
+    app.innerHTML = `
+      <button class="back-btn" onclick="location.hash='#/'">← 教科一覧</button>
+      <div class="subject-header">
+        <div class="subject-icon-lg" style="background:${s.color||'#4F46E5'}22">
+          ${s.icon||'📚'}
+        </div>
+        <h2>${s.name}</h2>
+      </div>
+      ${sections || '<p style="color:var(--slate)">教材が登録されていません</p>'}`;
+  }
+
+  // ── Quiz ───────────────────────────────────────────────
+
+  async function loadQuiz(file) {
+    app.innerHTML = `<div class="state-loading"><div class="spinner"></div><p>クイズを読み込み中...</p></div>`;
+    try {
+      const res = await fetch(file);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const subjectId = findSubjectByFile(file)?.id || null;
+      S.quiz = { data, file, subjectId, index:0, answers:[], phase:'question' };
+      renderQuizQuestion();
+    } catch (e) {
+      app.innerHTML = `<div class="error-box">クイズファイルの読み込みに失敗しました。<br><code>${file}</code><br>${e.message}</div>`;
+    }
+  }
+
+  function renderQuizQuestion() {
+    const { data, index, phase } = S.quiz;
+    const q     = data.questions[index];
+    const total = data.questions.length;
+    const pct   = ((index + 1) / total) * 100;
+    const back  = S.quiz.subjectId ? `#/subject/${S.quiz.subjectId}` : '#/';
+
+    const choicesHtml = q.choices.map((c, i) => {
+      let cls = 'choice-btn';
+      let disabled = '';
+      if (phase === 'answered') {
+        disabled = 'disabled';
+        const chosen = S.quiz.answers[index];
+        if      (i === q.answer) cls += ' correct';
+        else if (i === chosen)   cls += ' wrong';
+      }
+      return `
+        <button class="${cls}" ${disabled} onclick="answerQuiz(${i})">
+          <span class="badge ${BADGE_CLS[i]}">${BADGES[i]}</span>
+          <span>${c}</span>
+        </button>`;
+    }).join('');
+
+    const explain = (phase === 'answered' && q.explanation)
+      ? `<div class="explanation-box">💡 <strong>解説：</strong>${q.explanation}</div>`
+      : '';
+
+    const isLast = index + 1 >= total;
+    const nextBtn = phase === 'answered'
+      ? `<button class="next-btn" id="next-btn">${isLast ? '結果を見る →' : '次の問題 →'}</button>`
+      : '';
+
+    app.innerHTML = `
+      <div class="quiz-wrap">
+        <button class="back-btn" onclick="location.hash='${back}'">← 戻る</button>
+        <div class="quiz-meta">
+          <div class="quiz-title">${data.title}</div>
+          <div class="progress-bar">
+            <div class="progress-fill" style="width:${pct}%"></div>
+          </div>
+          <div class="progress-text">${index+1} / ${total} 問</div>
+        </div>
+        <div class="quiz-card">
+          <div class="question-text">Q${index+1}. ${q.question}</div>
+          <div class="choices">${choicesHtml}</div>
+          ${explain}
+        </div>
+        ${nextBtn}
+      </div>`;
+
+    document.getElementById('next-btn')?.addEventListener('click', nextQuestion);
+  }
+
+  function answerQuiz(i) {
+    if (S.quiz.phase !== 'question') return;
+    S.quiz.answers[S.quiz.index] = i;
+    S.quiz.phase = 'answered';
+    renderQuizQuestion();
+  }
+
+  function nextQuestion() {
+    const { data, index } = S.quiz;
+    if (index + 1 >= data.questions.length) {
+      renderQuizResult();
+    } else {
+      S.quiz.index++;
+      S.quiz.phase = 'question';
+      renderQuizQuestion();
+    }
+  }
+
+  function renderQuizResult() {
+    const { data, answers, file, subjectId } = S.quiz;
+    const total = data.questions.length;
+    const score = answers.filter((a,i) => a === data.questions[i].answer).length;
+    const pct   = Math.round(score / total * 100);
+    const { emoji, msg } = scoreMsg(pct);
+    const back  = subjectId ? `#/subject/${subjectId}` : '#/';
+
+    app.innerHTML = `
+      <div class="quiz-wrap">
+        <div class="result-card">
+          <div class="result-emoji">${emoji}</div>
+          <div class="result-score">${score}<span class="result-score-denom"> / ${total}</span></div>
+          <div class="result-pct">${pct}% 正解</div>
+          <div class="result-msg">${msg}</div>
+          <div class="result-actions">
+            <button class="btn-retry" id="retry-btn">もう一度挑戦</button>
+            <button class="btn-back"  id="back-btn" >教材一覧に戻る</button>
+          </div>
+        </div>
+      </div>`;
+
+    document.getElementById('retry-btn').addEventListener('click', () => {
+      S.quiz = null;
+      loadQuiz(file);
+    });
+    document.getElementById('back-btn').addEventListener('click', () => {
+      location.hash = back;
+    });
+  }
+
+  // ── Viewer ─────────────────────────────────────────────
+
+  function renderViewer(file) {
+    const back  = backHashFor(file);
+    const name  = file.split('/').pop();
+    const isPdf = /\.pdf$/i.test(file);
+    const isImg = /\.(png|jpe?g|gif|webp|svg)$/i.test(file);
+
+    let content;
+    if (isPdf) {
+      content = `<iframe class="pdf-frame" src="${file}" title="${name}"></iframe>`;
+    } else if (isImg) {
+      content = `<div class="image-viewer"><img src="${file}" alt="${name}" /></div>`;
+    } else {
+      content = `<div class="error-box">このファイル形式はプレビューできません: <code>${name}</code></div>`;
+    }
+
+    app.innerHTML = `
+      <button class="back-btn" onclick="location.hash='${back}'">← 戻る</button>
+      <div class="viewer-title">${name}</div>
+      ${content}`;
+  }
+
+  // ── Start ──────────────────────────────────────────────
+  init();
+</script>
+</body>
+</html>
