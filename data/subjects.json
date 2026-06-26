@@ -2,53 +2,94 @@
   "title": "学習ノート",
   "subjects": [
     {
-      "id": "math",
-      "name": "数学",
+      "id": "math1",
+      "name": "数学Ⅰ",
       "icon": "📐",
-      "color": "#4F46E5",
+      "color": "#3730A3",
       "materials": [
         {
           "type": "quiz",
-          "title": "方程式の基礎",
+          "title": "動作テスト",
           "file": "data/math/quiz_equations.json"
         }
       ]
     },
     {
-      "id": "science",
-      "name": "理科",
-      "icon": "🔬",
+      "id": "math2",
+      "name": "数学Ⅱ",
+      "icon": "📏",
+      "color": "#4F46E5",
+      "materials": []
+    },
+    {
+      "id": "english1",
+      "name": "英語Ⅰ",
+      "icon": "🔤",
+      "color": "#B45309",
+      "materials": []
+    },
+    {
+      "id": "english2",
+      "name": "英語Ⅱ",
+      "icon": "🌐",
+      "color": "#D97706",
+      "materials": []
+    },
+    {
+      "id": "physics",
+      "name": "物理",
+      "icon": "⚛️",
+      "color": "#0369A1",
+      "materials": []
+    },
+    {
+      "id": "chemistry",
+      "name": "化学",
+      "icon": "🧪",
       "color": "#059669",
-      "materials": [
-        
-      ]
+      "materials": []
     },
     {
-      "id": "english",
-      "name": "英語",
-      "icon": "🌍",
-      "color": "#F59E0B",
-      "materials": [
-        
-      ]
+      "id": "biology",
+      "name": "生物",
+      "icon": "🌿",
+      "color": "#16A34A",
+      "materials": []
     },
     {
-      "id": "japanese",
-      "name": "国語",
-      "icon": "📝",
-      "color": "#DC2626",
-      "materials": [
-        
-      ]
+      "id": "info",
+      "name": "情報",
+      "icon": "💻",
+      "color": "#6D28D9",
+      "materials": []
     },
     {
-      "id": "social",
-      "name": "社会",
-      "icon": "🗾",
+      "id": "history",
+      "name": "歴史",
+      "icon": "🏯",
+      "color": "#92400E",
+      "materials": []
+    },
+    {
+      "id": "civics",
+      "name": "公民",
+      "icon": "🏛️",
       "color": "#7C3AED",
-      "materials": [
-        
-      ]
+      "materials": []
+    },
+    {
+      "id": "jpn-modern",
+      "name": "現代国語",
+      "icon": "📖",
+      "color": "#DC2626",
+      "materials": []
+    },
+    {
+      "id": "jpn-classical",
+      "name": "古文",
+      "icon": "📜",
+      "color": "#9F1239",
+      "materials": []
     }
   ]
 }
