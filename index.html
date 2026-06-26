@@ -441,6 +441,82 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       FOOTER
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .site-footer {
+      border-top: 1px solid var(--line);
+      padding: 18px 28px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: .78rem;
+      color: var(--ink-2);
+    }
+    .footer-terms-link {
+      font-size: .78rem;
+      color: var(--ink-2);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color .14s;
+    }
+    .footer-terms-link:hover { color: var(--ink); }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       TERMS
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .terms-wrap {
+      max-width: 680px;
+    }
+    .terms-wrap h1 {
+      font-size: 1.4rem;
+      font-weight: 900;
+      letter-spacing: -.025em;
+      margin-bottom: 6px;
+    }
+    .terms-updated {
+      font-size: .78rem;
+      color: var(--ink-2);
+      margin-bottom: 32px;
+    }
+    .terms-section {
+      margin-bottom: 30px;
+    }
+    .terms-section h2 {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-bottom: 10px;
+      padding-bottom: 7px;
+      border-bottom: 1px solid var(--line);
+    }
+    .terms-section p {
+      font-size: .9rem;
+      line-height: 1.95;
+      color: var(--ink);
+    }
+    .terms-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+    .terms-section ul li {
+      font-size: .9rem;
+      line-height: 1.8;
+      padding-left: 1.2em;
+      position: relative;
+      color: var(--ink);
+    }
+    .terms-section ul li::before {
+      content: '—';
+      position: absolute;
+      left: 0;
+      color: var(--ink-2);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        RESPONSIVE
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     @media (max-width: 560px) {
@@ -473,6 +549,12 @@
 <main id="app">
   <div class="loading-state"><div class="spinner"></div><p>読み込み中...</p></div>
 </main>
+
+<!-- ── Footer ────────────────────────────────── -->
+<footer class="site-footer">
+  <span>© <span id="footer-year"></span> Sho Teramoto</span>
+  <button class="footer-terms-link" onclick="go('#/terms')">利用規約</button>
+</footer>
 
 <script>
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -555,6 +637,7 @@ function route() {
     else                                 fade(renderQuizQ);
   }
   else if (h.startsWith('#/view/'))     { fade(() => renderViewer(h.slice(7))); }
+  else if (h === '#/terms')             { fade(renderTerms); }
   else                                  { fade(renderHome); }
 }
 
@@ -804,8 +887,67 @@ function renderViewer(file) {
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   TERMS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function renderTerms() {
+  app.innerHTML = `
+    <div class="terms-wrap">
+      <button class="back-btn" onclick="go('#/')">← ホームへ</button>
+      <h1>利用規約</h1>
+      <p class="terms-updated">最終更新：2025年</p>
+
+      <div class="terms-section">
+        <h2>1. 適用範囲</h2>
+        <p>本規約は、当サイト（以下「本サイト」）で公開しているすべてのコンテンツ（テキスト・PDF・画像・クイズデータ等）の利用に適用されます。本サイトを利用した時点で、本規約に同意したものとみなします。</p>
+      </div>
+
+      <div class="terms-section">
+        <h2>2. 利用目的</h2>
+        <p>本サイトのコンテンツは、個人の学習・復習を目的とした閲覧・印刷のみに使用できます。以下の利用は許可されていません。</p>
+        <ul>
+          <li>商業目的での使用</li>
+          <li>授業・塾・予備校等の教材としての無断使用</li>
+          <li>営利・非営利を問わず、第三者への提供を目的とした使用</li>
+        </ul>
+      </div>
+
+      <div class="terms-section">
+        <h2>3. 二次配布の禁止</h2>
+        <p>本サイトのコンテンツを、形式や媒体を問わず無断で複製・転載・再配布・販売することを禁止します。具体的には以下の行為が禁止されます。</p>
+        <ul>
+          <li>コンテンツのコピーを別のウェブサイト・SNS・動画等に掲載すること</li>
+          <li>PDFや画像ファイルを他者へ送付・共有すること</li>
+          <li>クイズデータ（JSONファイル等）を転用・再公開すること</li>
+          <li>本サイトのデザイン・コードを流用して別サービスを構築すること</li>
+        </ul>
+      </div>
+
+      <div class="terms-section">
+        <h2>4. 著作権</h2>
+        <p>本サイトのすべてのコンテンツの著作権は Sho Teramoto に帰属します。著作権法で認められた私的使用の範囲を超える複製・引用は、事前の書面による許諾が必要です。</p>
+      </div>
+
+      <div class="terms-section">
+        <h2>5. 免責事項</h2>
+        <p>本サイトのコンテンツは個人の学習目的で作成したものです。内容の正確性・完全性・最新性を保証するものではありません。本サイトの利用によって生じた損害について、運営者は一切の責任を負いません。</p>
+      </div>
+
+      <div class="terms-section">
+        <h2>6. 規約の変更</h2>
+        <p>本規約は予告なく変更される場合があります。変更後も本サイトを引き続き利用した場合、変更後の規約に同意したものとみなします。</p>
+      </div>
+
+      <div class="terms-section">
+        <h2>7. お問い合わせ</h2>
+        <p>本規約に関するご質問は、本サイト運営者（Sho Teramoto）までお問い合わせください。</p>
+      </div>
+    </div>`;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Start
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+document.getElementById('footer-year').textContent = new Date().getFullYear();
 init();
 </script>
 </body>
