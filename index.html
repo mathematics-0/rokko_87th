@@ -310,6 +310,7 @@
     .q-text .katex-display { margin: .5em 0; }
 
     .choices { display: flex; flex-direction: column; gap: 8px; }
+    .choices .choice-btn { flex: 1; }
 
     .choice-btn {
       background: var(--bg);
@@ -362,6 +363,50 @@
     }
     /* KaTeX in explanation */
     .explain-box .katex { font-size: .97em; }
+
+    /* ── Quiz animations ── */
+    @keyframes card-enter {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes card-leave {
+      from { opacity: 1; transform: translateX(0)    scale(1); }
+      to   { opacity: 0; transform: translateX(-28px) scale(.97); }
+    }
+    @keyframes pop-correct {
+      0%   { transform: scale(1); }
+      45%  { transform: scale(1.035); }
+      100% { transform: scale(1); }
+    }
+    @keyframes shake-wrong {
+      0%,100% { transform: translateX(0); }
+      18%  { transform: translateX(-7px); }
+      36%  { transform: translateX( 7px); }
+      54%  { transform: translateX(-4px); }
+      72%  { transform: translateX( 4px); }
+    }
+    @keyframes explain-in {
+      from { opacity: 0; transform: translateY(7px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes result-in {
+      from { opacity: 0; transform: scale(.92); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes emoji-bounce {
+      0%,100% { transform: translateY(0); }
+      40%     { transform: translateY(-10px); }
+      70%     { transform: translateY(-5px); }
+    }
+
+    .quiz-card              { animation: card-enter .32s cubic-bezier(.22,.68,0,1.2); }
+    .quiz-card.leaving      { animation: card-leave .18s ease forwards; }
+    .quiz-card.no-anim      { animation: none; }
+    .choice-btn.correct     { animation: pop-correct  .38s ease; }
+    .choice-btn.wrong       { animation: shake-wrong  .42s ease; }
+    .explain-box            { animation: explain-in   .3s  ease; }
+    .result-card            { animation: result-in    .4s  cubic-bezier(.34,1.56,.64,1); }
+    .result-emoji.bounce    { animation: emoji-bounce .6s  ease .15s; }
 
     .next-btn {
       background: var(--accent);
@@ -666,7 +711,7 @@ function fadeIn(renderFn) {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const T_ICON  = { pdf:'📄', quiz:'✏️', image:'🖼️' };
 const T_LABEL = { pdf:'PDF', quiz:'クイズ', image:'画像' };
-const BADGE_L = ['A','B','C','D'];
+const BADGE_L = ['A','B','C','D','E','F'];
 
 function subjectOf(file) {
   return S.subjects?.find(s => s.materials?.some(m => m.file === file));
@@ -768,12 +813,13 @@ async function loadQuiz(file) {
   }
 }
 
-function renderQuizQ() {
+function renderQuizQ(noAnim = false) {
   const { data, idx, phase } = S.quiz;
   const q     = data.questions[idx];
   const total = data.questions.length;
   const bk    = S.quiz.sid ? `#/subject/${S.quiz.sid}` : '#/';
 
+  const choiceLayout = q.choices.length <= 2 ? 'style="flex-direction:row;flex-wrap:wrap;"' : '';
   const choices = q.choices.map((c,i) => {
     let cls = 'choice-btn', dis = '';
     if (phase === 'a') {
@@ -804,9 +850,9 @@ function renderQuizQ() {
         <div class="prog-bar"><div class="prog-fill" style="width:${(idx+1)/total*100}%"></div></div>
         <div class="prog-text">${idx+1} / ${total} 問</div>
       </div>
-      <div class="quiz-card">
+      <div class="quiz-card${noAnim ? ' no-anim' : ''}">
         <div class="q-text">Q${idx+1}. ${q.question}</div>
-        <div class="choices">${choices}</div>
+        <div class="choices" ${choiceLayout}>${choices}</div>
         ${explain}
       </div>
       ${nxtBtn}
@@ -819,13 +865,24 @@ function answerQ(i) {
   if (S.quiz.phase !== 'q') return;
   S.quiz.ans[S.quiz.idx] = i;
   S.quiz.phase = 'a';
-  renderQuizQ();
+  renderQuizQ(true);   // keep card in place; only choices/explain animate
   renderMath();
 }
 
 function nextQ() {
   if (S.quiz.idx+1 >= S.quiz.data.questions.length) {
     fade(renderResult);
+    return;
+  }
+  const card = document.querySelector('.quiz-card');
+  if (card) {
+    card.classList.add('leaving');
+    setTimeout(() => {
+      S.quiz.idx++;
+      S.quiz.phase = 'q';
+      renderQuizQ();     // card-enter plays on new card
+      renderMath();
+    }, 180);
   } else {
     S.quiz.idx++;
     S.quiz.phase = 'q';
@@ -851,8 +908,8 @@ function renderResult() {
   app.innerHTML = `
     <div class="quiz-wrap">
       <div class="result-card">
-        <div class="result-emoji">${emoji}</div>
-        <div class="result-score">${score}<span class="result-denom"> / ${total}</span></div>
+        <div class="result-emoji bounce">${emoji}</div>
+        <div class="result-score"><span id="r-score">0</span><span class="result-denom"> / ${total}</span></div>
         <div class="result-pct">${pct}% 正解</div>
         <div class="result-msg">${msg}</div>
         <div class="result-acts">
@@ -861,6 +918,8 @@ function renderResult() {
         </div>
       </div>
     </div>`;
+
+  animateCount(document.getElementById('r-score'), score, 750);
 
   document.getElementById('r-retry').addEventListener('click', () => { S.quiz=null; fade(()=>loadQuiz(file)); });
   document.getElementById('r-back' ).addEventListener('click', () => go(bk));
@@ -942,6 +1001,20 @@ function renderTerms() {
         <p>本規約に関するご質問は、本サイト運営者（Sho Teramoto）までお問い合わせください。</p>
       </div>
     </div>`;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   HELPERS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function animateCount(el, to, dur) {
+  if (!el) return;
+  const t0  = performance.now();
+  const ease = t => 1 - (1-t)**3;  // cubic ease-out
+  (function step(now) {
+    const p = Math.min((now - t0) / dur, 1);
+    el.textContent = Math.round(ease(p) * to);
+    if (p < 1) requestAnimationFrame(step);
+  })(t0);
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
