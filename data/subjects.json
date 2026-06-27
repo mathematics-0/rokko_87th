@@ -75,7 +75,13 @@
       "name": "公民",
       "icon": "🏛️",
       "color": "#7C3AED",
-      "materials": []
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "1学期期末 立山",
+          "file": "data/civics/quiz_tateyama.json"
+        }
+      ]
     },
     {
       "id": "jpn-modern",
