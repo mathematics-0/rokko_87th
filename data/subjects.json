@@ -7,11 +7,6 @@
       "icon": "📐",
       "color": "#3730A3",
       "materials": [
-        {
-          "type": "pdf",
-          "title": "期待値",
-          "file": "data/math/expected_value_problems.pdf"
-        }
       ]
     },
     {
@@ -19,7 +14,13 @@
       "name": "数学Ⅱ",
       "icon": "📏",
       "color": "#4F46E5",
-      "materials": []
+      "materials": [
+        {
+          "type": "pdf",
+          "title": "期待値",
+          "file": "data/math/expected_value_problems.pdf"
+        }
+      ]
     },
     {
       "id": "english1",
