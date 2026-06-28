@@ -3,7 +3,7 @@
   "subjects": [
     {
       "id": "math1",
-      "name": "数学Ⅰ",
+      "name": "数学1",
       "icon": "📐",
       "color": "#3730A3",
       "materials": [
@@ -11,7 +11,7 @@
     },
     {
       "id": "math2",
-      "name": "数学Ⅱ",
+      "name": "数学2",
       "icon": "📏",
       "color": "#4F46E5",
       "materials": [
