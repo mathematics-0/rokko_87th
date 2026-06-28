@@ -19,14 +19,14 @@
   <style>
     /* ── Token ── */
     :root {
-      --bg:      #F5F4EF;   /* warm paper    */
+      --bg:      #F5F4EF;
       --surface: #FFFFFF;
-      --ink:     #1C1C1C;   /* primary text  */
-      --ink-2:   #888888;   /* muted text    */
-      --line:    #DDDBD5;   /* borders       */
-      --accent:  #3730A3;   /* one blue      */
-      --ok:      #166534;   /* correct (quiz only) */
-      --ng:      #991B1B;   /* wrong   (quiz only) */
+      --ink:     #1C1C1C;
+      --ink-2:   #888888;
+      --line:    #DDDBD5;
+      --accent:  #3730A3;
+      --ok:      #166534;
+      --ng:      #991B1B;
       --r: 10px;
     }
 
@@ -306,8 +306,7 @@
       line-height: 1.85;
       margin-bottom: 20px;
     }
-    /* KaTeX sizing */
-    .q-text .katex       { font-size: 1em; }
+    .q-text .katex         { font-size: 1em; }
     .q-text .katex-display { margin: .5em 0; }
 
     .choices { display: flex; flex-direction: column; gap: 8px; }
@@ -330,7 +329,6 @@
     .choice-btn:not(:disabled):hover { background: var(--surface); border-color: var(--ink-2); }
     .choice-btn:disabled              { cursor: default; }
 
-    /* ABCD badge — single dark color; changes on answer */
     .badge {
       width: 27px;
       height: 27px;
@@ -351,7 +349,6 @@
     .choice-btn.wrong                { background: #FEF2F2; border-color: var(--ng); }
     .choice-btn.wrong .badge         { background: var(--ng); }
 
-    /* Explanation */
     .explain-box {
       background: var(--bg);
       border-left: 3px solid var(--accent);
@@ -362,7 +359,6 @@
       margin-top: 13px;
       color: var(--ink-2);
     }
-    /* KaTeX in explanation */
     .explain-box .katex { font-size: .97em; }
 
     /* ── Quiz animations ── */
@@ -371,7 +367,7 @@
       to   { opacity: 1; transform: translateY(0); }
     }
     @keyframes card-leave {
-      from { opacity: 1; transform: translateX(0)    scale(1); }
+      from { opacity: 1; transform: translateX(0)     scale(1); }
       to   { opacity: 0; transform: translateX(-28px) scale(.97); }
     }
     @keyframes pop-correct {
@@ -466,12 +462,6 @@
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        VIEWER
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .viewer-name {
-      font-size: .95rem;
-      font-weight: 700;
-      color: var(--ink-2);
-      margin-bottom: 14px;
-    }
     .pdf-frame {
       width: 100%;
       height: 74vh;
@@ -510,9 +500,7 @@
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        TERMS
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-    .terms-wrap {
-      max-width: 680px;
-    }
+    .terms-wrap { max-width: 680px; }
     .terms-wrap h1 {
       font-size: 1.4rem;
       font-weight: 900;
@@ -524,9 +512,7 @@
       color: var(--ink-2);
       margin-bottom: 32px;
     }
-    .terms-section {
-      margin-bottom: 30px;
-    }
+    .terms-section { margin-bottom: 30px; }
     .terms-section h2 {
       font-size: .7rem;
       font-weight: 700;
@@ -566,11 +552,11 @@
        RESPONSIVE
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     @media (max-width: 560px) {
-      #app          { padding: 22px 14px 60px; }
-      .subjects-grid{ grid-template-columns: 1fr; }
-      .quiz-card    { padding: 18px 14px; }
-      .result-card  { padding: 38px 16px; }
-      .result-acts  { flex-direction: column; }
+      #app           { padding: 22px 14px 60px; }
+      .subjects-grid { grid-template-columns: 1fr; }
+      .quiz-card     { padding: 18px 14px; }
+      .result-card   { padding: 38px 16px; }
+      .result-acts   { flex-direction: column; }
     }
   </style>
 </head>
@@ -637,7 +623,7 @@ setTimeout(() => {
    State
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 const S = {
-  subjects: [],    // null = load error
+  subjects: [],
   siteTitle: '学習ノート',
   quiz: null,
 };
@@ -659,7 +645,6 @@ async function init() {
     S.siteTitle = data.title     || '学習ノート';
     titleEl.textContent = S.siteTitle;
     document.title      = S.siteTitle;
-    // also update splash title if still visible
     const st = document.getElementById('splash-title');
     if (st) st.textContent = S.siteTitle;
   } catch {
@@ -699,7 +684,6 @@ function fade(renderFn) {
   }, 200);
 }
 
-/* After async load, fade in fresh content */
 function fadeIn(renderFn) {
   app.classList.add('fading');
   renderFn();
@@ -801,7 +785,7 @@ function renderSubject(id) {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 async function loadQuiz(file) {
   app.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>読み込み中...</p></div>`;
-  app.classList.remove('fading');   // show spinner immediately
+  app.classList.remove('fading');
   try {
     const res = await fetch(file);
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -866,7 +850,7 @@ function answerQ(i) {
   if (S.quiz.phase !== 'q') return;
   S.quiz.ans[S.quiz.idx] = i;
   S.quiz.phase = 'a';
-  renderQuizQ(true);   // keep card in place; only choices/explain animate
+  renderQuizQ(true);
   renderMath();
 }
 
@@ -881,7 +865,7 @@ function nextQ() {
     setTimeout(() => {
       S.quiz.idx++;
       S.quiz.phase = 'q';
-      renderQuizQ();     // card-enter plays on new card
+      renderQuizQ();
       renderMath();
     }, 180);
   } else {
@@ -921,7 +905,6 @@ function renderResult() {
     </div>`;
 
   animateCount(document.getElementById('r-score'), score, 750);
-
   document.getElementById('r-retry').addEventListener('click', () => { S.quiz=null; fade(()=>loadQuiz(file)); });
   document.getElementById('r-back' ).addEventListener('click', () => go(bk));
 }
@@ -942,7 +925,6 @@ function renderViewer(file) {
 
   app.innerHTML = `
     <button class="back-btn" onclick="go('${bk}')">← 戻る</button>
-    <div class="viewer-name">${name}</div>
     ${body}`;
 }
 
@@ -1009,7 +991,7 @@ function renderTerms() {
 function animateCount(el, to, dur) {
   if (!el) return;
   const t0  = performance.now();
-  const ease = t => 1 - (1-t)**3;  // cubic ease-out
+  const ease = t => 1 - (1-t)**3;
   (function step(now) {
     const p = Math.min((now - t0) / dur, 1);
     el.textContent = Math.round(ease(p) * to);
