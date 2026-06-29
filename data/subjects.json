@@ -99,6 +99,11 @@
           "type": "pdf",
           "title": "部分否定全否定",
           "file": "data/japanese/chinese_classic_1.pdf"
+        },
+        {
+          "type": "pdf",
+          "title": "山に行く心　漢字",
+          "file": "data/japanese/山に行く心_漢字.pdf"
         }
       ]
     },
