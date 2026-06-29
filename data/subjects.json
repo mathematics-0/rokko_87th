@@ -101,9 +101,9 @@
           "file": "data/japanese/chinese_classic_1.pdf"
         },
         {
-          "type": "pdf",
+          "type": "png",
           "title": "山に行く心　漢字",
-          "file": "data/japanese/山に行く心_漢字.pdf"
+          "file": "data/japanese/山に行く心_漢字.png"
         }
       ]
     },
