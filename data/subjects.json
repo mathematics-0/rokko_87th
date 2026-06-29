@@ -89,7 +89,18 @@
       "name": "現代国語",
       "icon": "📖",
       "color": "#DC2626",
-      "materials": []
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "部分否定全否定",
+          "file": "data/japanese/quiz_chinese_classic_1.json"
+        },
+        {
+          "type": "pdf",
+          "title": "部分否定全否定",
+          "file": "data/japanese/chinese_classic_1.pdf"
+        }
+      ]
     },
     {
       "id": "jpn-classical",
