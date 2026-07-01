@@ -79,17 +79,17 @@
       "materials": [
         {
           "type": "quiz",
-          "title": "1学期期末 西川",
+          "title": "1学期期末 西川先生",
           "file": "data/civics/quiz_naikaku_kokkai.json"
         },
         {
           "type": "pdf",
-          "title": "1学期期末 西川",
+          "title": "1学期期末 西川先生",
           "file": "data/civics/kokumin_naikaku_kokkai_akashiito.pdf"
         }
         {
           "type": "quiz",
-          "title": "1学期期末 増井",
+          "title": "1学期期末 増井先生",
           "file": "data/civics/quiz_公民増井_1.json"
         },
         {
