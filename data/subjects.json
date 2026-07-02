@@ -27,7 +27,13 @@
       "name": "英語Ⅰ",
       "icon": "🔤",
       "color": "#B45309",
-      "materials": []
+      "materials": [
+        {
+          "type": "pdf",
+          "title": "1学期期末 テスト英文集",
+          "file": "data/english/english1_test_1.pdf"
+        }
+      ]
     },
     {
       "id": "english2",
