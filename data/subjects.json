@@ -78,7 +78,7 @@
       "materials": [
         {
           "type": "quiz",
-          "title": "1学期期末",
+          "title": "1学期期末 一問一答",
           "file": "data/history/quiz_edo_bakuhan_taisei.json"
         },
         {
