@@ -75,7 +75,18 @@
       "name": "歴史",
       "icon": "🏯",
       "color": "#92400E",
-      "materials": []
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "1学期期末",
+          "file": "data/history/quiz_edo_bakuhan_taisei.json"
+        },
+        {
+          "type": "pdf",
+          "title": "1学期期末",
+          "file": "data/history/江戸幕府の成立_赤シート_ノート形式.pdf"
+        }
+      ]
     },
     {
       "id": "civics",
