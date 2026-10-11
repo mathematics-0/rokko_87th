@@ -560,6 +560,305 @@
       .result-card   { padding: 38px 16px; }
       .result-acts   { flex-direction: column; }
     }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       UPDATE — 共通パーツ（ジャンプ・一覧・トースト）
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .tool-btn {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 5px 13px;
+      font-size: .8rem;
+      color: var(--ink-2);
+      background: var(--surface);
+      white-space: nowrap;
+      transition: border-color .14s, color .14s;
+    }
+    .tool-btn:hover { border-color: var(--ink-2); color: var(--ink); }
+
+    .quiz-tools {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    .tool-spacer { flex: 1; }
+    .jump {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: .8rem;
+      color: var(--ink-2);
+    }
+    .jump input {
+      width: 62px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 5px 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .88rem;
+      color: var(--ink);
+      background: var(--surface);
+      text-align: center;
+      -moz-appearance: textfield;
+    }
+    .jump input::-webkit-outer-spin-button,
+    .jump input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+    .qnav {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .qnav[hidden] { display: none; }
+    .qnav-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(38px, 1fr));
+      gap: 6px;
+    }
+    .qn {
+      height: 34px;
+      border: 1.5px solid var(--line);
+      border-radius: 8px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .82rem;
+      font-weight: 600;
+      background: var(--bg);
+      transition: border-color .12s;
+    }
+    .qn:hover { border-color: var(--ink-2); }
+    .qn.ok  { background: #F0FAF3; border-color: var(--ok); color: var(--ok); }
+    .qn.ng  { background: #FEF2F2; border-color: var(--ng); color: var(--ng); }
+    .qn.cur { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .qnav-foot {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+      font-size: .74rem;
+      color: var(--ink-2);
+    }
+    .qnav-foot .tool-btn { margin-left: auto; }
+    .lg { display: inline-flex; align-items: center; gap: 5px; }
+    .lg i { width: 10px; height: 10px; border-radius: 3px; border: 1.5px solid var(--line); display: inline-block; }
+    .lg.ok i { border-color: var(--ok); background: #F0FAF3; }
+    .lg.ng i { border-color: var(--ng); background: #FEF2F2; }
+
+    .nav-row { display: flex; gap: 10px; }
+    .nav-row .prev-btn {
+      border: 1.5px solid var(--line);
+      border-radius: var(--r);
+      padding: 12px 18px;
+      font-size: .9rem;
+      font-weight: 700;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: border-color .14s;
+    }
+    .nav-row .prev-btn:hover:not(:disabled) { border-color: var(--ink-2); }
+    .nav-row .prev-btn:disabled { opacity: .4; cursor: default; }
+    .nav-row .next-btn { flex: 1; width: auto; }
+    .next-btn.skip {
+      background: transparent;
+      color: var(--ink-2);
+      border: 1.5px solid var(--line);
+    }
+    .next-btn.skip:hover { opacity: 1; border-color: var(--ink-2); color: var(--ink); }
+
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: 28px;
+      transform: translate(-50%, 12px);
+      background: var(--ink);
+      color: #fff;
+      padding: 9px 18px;
+      border-radius: 20px;
+      font-size: .84rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s, transform .2s;
+      z-index: 950;
+      max-width: 90vw;
+      text-align: center;
+    }
+    #toast.show { opacity: 1; transform: translate(-50%, 0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       UPDATE — 検索・グループ・ダウンロード
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .site-header .home-link   { margin-left: 0; }
+    .site-header .search-link { margin-left: auto; }
+
+    .dl-btn {
+      flex-shrink: 0;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 5px 11px;
+      font-size: .75rem;
+      font-weight: 700;
+      color: var(--ink-2);
+      transition: border-color .14s, color .14s;
+    }
+    .dl-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .home-search {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 13px 17px;
+      margin-bottom: 26px;
+      color: var(--ink-2);
+      font-size: .92rem;
+      text-align: left;
+      transition: border-color .15s;
+    }
+    .home-search:hover { border-color: var(--ink-2); }
+    .home-search kbd {
+      margin-left: auto;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .72rem;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 0 6px;
+    }
+
+    .subject-header .tool-btn { margin-left: auto; }
+
+    .group { margin-bottom: 18px; }
+    .group > summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      padding: 10px 2px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 10px;
+      user-select: none;
+    }
+    .group > summary::-webkit-details-marker { display: none; }
+    .group > summary::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      border-right: 2px solid var(--ink-2);
+      border-bottom: 2px solid var(--ink-2);
+      transform: rotate(-45deg);
+      transition: transform .18s;
+      margin: 0 5px 0 3px;
+      flex-shrink: 0;
+    }
+    .group[open] > summary::before { transform: rotate(45deg); margin-bottom: 4px; }
+    .group-name { flex: 1; font-size: 1rem; font-weight: 700; letter-spacing: -.01em; }
+
+    .mat-title small, .s-meta {
+      display: block;
+      font-size: .72rem;
+      font-weight: 400;
+      color: var(--ink-2);
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1.5px solid var(--line);
+      border-radius: var(--r);
+      padding: 0 16px;
+      transition: border-color .15s;
+    }
+    .search-box:focus-within { border-color: var(--accent); }
+    .search-box input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: none;
+      font: inherit;
+      font-size: 1rem;
+      padding: 14px 0;
+      color: var(--ink);
+    }
+    .scope-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 12px;
+      font-size: .78rem;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      border-radius: 20px;
+      padding: 3px 5px 3px 12px;
+    }
+    .scope-chip button { width: 20px; height: 20px; border-radius: 50%; font-size: .9rem; line-height: 1; }
+    .scope-chip button:hover { background: var(--bg); }
+    .search-status { font-size: .78rem; color: var(--ink-2); margin: 14px 2px 18px; min-height: 1.2em; }
+    .search-more   { font-size: .8rem; color: var(--ink-2); margin: 4px 2px 0; }
+
+    .s-quiz {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      margin-bottom: 10px;
+      overflow: hidden;
+    }
+    .s-quiz-head {
+      padding: 11px 16px;
+      font-size: .88rem;
+      display: flex;
+      gap: 8px;
+      align-items: baseline;
+      flex-wrap: wrap;
+    }
+    .s-quiz-head b { font-weight: 700; }
+    .s-quiz-head .s-meta { display: inline; }
+    .s-hit {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      text-align: left;
+      padding: 11px 16px;
+      border-top: 1px solid var(--line);
+      font-size: .88rem;
+      line-height: 1.7;
+      transition: background .12s;
+    }
+    .s-hit:hover { background: var(--bg); }
+    .s-qn {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: .78rem;
+      color: var(--accent);
+      flex-shrink: 0;
+      min-width: 2.2em;
+      padding-top: .2em;
+    }
+    .s-txt small { display: block; color: var(--ink-2); font-size: .78rem; }
+    mark { background: #FFF1B8; color: inherit; border-radius: 2px; padding: 0 1px; }
+
+    .result-acts .btn-ghost, .result-acts .btn-fill { cursor: pointer; }
+
+    @media (max-width: 560px) {
+      .home-search kbd { display: none; }
+      .dl-text { display: none; }
+      .jump input { width: 56px; }
+    }
   </style>
 </head>
 <body>
@@ -576,6 +875,7 @@
 <header class="site-header">
   <span style="font-size:1.2rem">📚</span>
   <h1 id="site-title">学習ノート</h1>
+  <button class="home-link search-link" id="search-btn" aria-label="検索">🔍 検索</button>
   <button class="home-link" id="home-btn">ホームへ</button>
 </header>
 
@@ -583,6 +883,8 @@
 <main id="app">
   <div class="loading-state"><div class="spinner"></div><p>読み込み中...</p></div>
 </main>
+
+<div id="toast" role="status" aria-live="polite"></div>
 
 <!-- ── Footer ────────────────────────────────── -->
 <footer class="site-footer">
@@ -628,12 +930,35 @@ const S = {
   subjects: [],
   siteTitle: '学習ノート',
   quiz: null,
+  quizText: {},   // file -> JSON 文字列（ダウンロード用）
+  quizCache: {},  // file -> パース済みクイズ（検索用）
+  quizFail: {},
+  inflight: {},
+  closed: {},     // 閉じているグループ
 };
 
 const app     = document.getElementById('app');
 const titleEl = document.getElementById('site-title');
 
 document.getElementById('home-btn').addEventListener('click', () => go('#/'));
+document.getElementById('search-btn').addEventListener('click', () => go('#/search'));
+
+// data-go / data-dl を持つ要素のクリックをまとめて処理
+app.addEventListener('click', e => {
+  const dl = e.target.closest('[data-dl]');
+  if (dl) { downloadQuiz(dl.dataset.dl); return; }
+  const g = e.target.closest('[data-go]');
+  if (g) go(g.dataset.go);
+});
+
+// 「/」キーで検索を開く
+document.addEventListener('keydown', e => {
+  if (e.key !== '/' || e.ctrlKey || e.metaKey || e.altKey) return;
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '')) return;
+  e.preventDefault();
+  if (location.hash.startsWith('#/search')) document.getElementById('search-input')?.focus();
+  else go('#/search');
+});
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Boot
@@ -660,16 +985,25 @@ async function init() {
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function go(hash) { location.hash = hash; }
 
+function parseQuizHash(rest) {
+  const m = rest.match(/^(.*?)(?:\?q=(\d+))?$/);
+  return { file: m[1], q: m[2] ? parseInt(m[2], 10) - 1 : null };
+}
+
 function route() {
   const h = location.hash || '#/';
   if (h === '#/' || h === '#')          { fade(renderHome); }
   else if (h.startsWith('#/subject/'))  { fade(() => renderSubject(h.slice(10))); }
   else if (h.startsWith('#/quiz/')) {
-    const file = h.slice(7);
-    if (!S.quiz || S.quiz.file !== file) fade(() => loadQuiz(file));
-    else                                 fade(renderQuizQ);
+    const { file, q } = parseQuizHash(h.slice(7));
+    if (!S.quiz || S.quiz.file !== file) fade(() => loadQuiz(file, q));
+    else fade(() => {
+      if (q !== null) S.quiz.idx = Math.max(0, Math.min(S.quiz.data.questions.length - 1, q));
+      renderQuizQ();
+    });
   }
   else if (h.startsWith('#/view/'))     { fade(() => renderViewer(h.slice(7))); }
+  else if (h.startsWith('#/search'))    { fade(() => renderSearch(h.slice(9) || null)); }
   else if (h === '#/terms')             { fade(renderTerms); }
   else                                  { fade(renderHome); }
 }
@@ -741,7 +1075,9 @@ function renderHome() {
       </div>`;
   }).join('');
 
-  app.innerHTML = `<div class="page-title">教科を選択</div><div class="subjects-grid">${cards}</div>`;
+  app.innerHTML = `
+    <button class="home-search" data-go="#/search"><span aria-hidden="true">🔍</span><span>教材・問題を検索</span><kbd>/</kbd></button>
+    <div class="page-title">教科を選択</div><div class="subjects-grid">${cards}</div>`;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -753,67 +1089,105 @@ function renderSubject(id) {
 
   const ORDER = ['quiz','pdf','image'];
   const NAMES = { quiz:'クイズ', pdf:'PDF ノート', image:'画像・図' };
-  const g = {};
-  (s.materials||[]).forEach(m => { (g[m.type]??=[]).push(m); });
+  const ord   = t => { const i = ORDER.indexOf(t); return i < 0 ? 99 : i; };
+  const mats  = s.materials || [];
 
-  const sections = ORDER.filter(t => g[t]).map(t => {
-    const items = g[t].map(m => {
-      const dest = m.type==='quiz' ? `#/quiz/${m.file}` : `#/view/${m.file}`;
-      return `
-        <div class="mat-item">
-          <span class="mat-icon">${T_ICON[m.type]}</span>
-          <span class="mat-title">${m.title}</span>
-          <button class="open-btn" onclick="location.hash='${dest}'">開く</button>
-        </div>`;
-    }).join('');
+  const row = m => {
+    const dest = m.type === 'quiz' ? `#/quiz/${m.file}` : `#/view/${m.file}`;
+    const dl = m.type === 'quiz'
+      ? `<button class="dl-btn" data-dl="${esc(m.file)}" title="オフライン版用のJSONをダウンロード" aria-label="JSONをダウンロード">⬇<span class="dl-text"> JSON</span></button>`
+      : '';
     return `
+        <div class="mat-item">
+          <span class="mat-icon">${T_ICON[m.type] || '📎'}</span>
+          <span class="mat-title">${m.title}</span>
+          ${dl}
+          <button class="open-btn" data-go="${esc(dest)}">開く</button>
+        </div>`;
+  };
+
+  let body;
+  if (!mats.some(m => m.group)) {
+    // グループ指定が無い教科は従来どおり「種類別」に表示
+    const g = {};
+    mats.forEach(m => { (g[m.type] ??= []).push(m); });
+    body = ORDER.filter(t => g[t]).map(t => `
       <div class="mat-section">
         <div class="mat-label">${NAMES[t]}</div>
-        <div class="mat-list">${items}</div>
-      </div>`;
-  }).join('');
+        <div class="mat-list">${g[t].map(row).join('')}</div>
+      </div>`).join('');
+  } else {
+    // グループ指定あり: subject.groups で順序指定（省略可）。未指定は登場順。グループ無しは末尾「その他」
+    const order = [...(s.groups || [])];
+    mats.forEach(m => { if (m.group && !order.includes(m.group)) order.push(m.group); });
+    if (mats.some(m => !m.group)) order.push('');
+
+    body = order.map(name => {
+      const list = mats.filter(m => (m.group || '') === name)
+                       .sort((a, b) => ord(a.type) - ord(b.type));
+      if (!list.length) return '';
+      const key = `${s.id}|${name}`;
+      const c = {};
+      list.forEach(m => { c[m.type] = (c[m.type] || 0) + 1; });
+      const badges = ORDER.filter(t => c[t])
+        .map(t => `<span class="count-badge">${T_ICON[t]} ${c[t]}</span>`).join('');
+      return `
+        <details class="group" data-gkey="${esc(key)}" ${S.closed[key] ? '' : 'open'}>
+          <summary><span class="group-name">${name || 'その他'}</span><span class="count-badges">${badges}</span></summary>
+          <div class="mat-list">${list.map(row).join('')}</div>
+        </details>`;
+    }).join('');
+  }
 
   app.innerHTML = `
     <button class="back-btn" onclick="go('#/')">← 教科一覧</button>
     <div class="subject-header">
       <span class="subject-icon-lg">${s.icon||'📚'}</span>
       <h2>${s.name}</h2>
+      <button class="tool-btn" data-go="#/search/${esc(s.id)}">🔍 この教科を検索</button>
     </div>
-    ${sections||'<p style="color:var(--ink-2)">教材が登録されていません</p>'}`;
+    ${body||'<p style="color:var(--ink-2)">教材が登録されていません</p>'}`;
+
+  app.querySelectorAll('details.group').forEach(d =>
+    d.addEventListener('toggle', () => { S.closed[d.dataset.gkey] = !d.open; }));
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    QUIZ
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-async function loadQuiz(file) {
+async function loadQuiz(file, startIdx = null) {
   app.innerHTML = `<div class="loading-state"><div class="spinner"></div><p>読み込み中...</p></div>`;
   app.classList.remove('fading');
   try {
-    const res = await fetch(file);
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    const data = await res.json();
-    S.quiz = { data, file, sid: subjectOf(file)?.id||null, idx:0, ans:[], phase:'q' };
+    const data = await getQuiz(file);
+    S.quiz = { data, file, sid: subjectOf(file)?.id || null, idx: 0, ans: [], navOpen: false };
+    if (startIdx !== null && !isNaN(startIdx))
+      S.quiz.idx = Math.max(0, Math.min(data.questions.length - 1, startIdx));
     fadeIn(renderQuizQ);
   } catch(e) {
-    app.innerHTML = `<div class="error-box">クイズを読み込めませんでした<br><code>${file}</code><br>${e.message}</div>`;
+    app.innerHTML = `<div class="error-box">クイズを読み込めませんでした<br><code>${esc(file)}</code><br>${esc(e.message)}</div>`;
     app.classList.remove('fading');
   }
 }
 
 function renderQuizQ(noAnim = false) {
-  const { data, idx, phase } = S.quiz;
+  const Q = S.quiz;
+  const { data, idx } = Q;
   const q     = data.questions[idx];
   const total = data.questions.length;
-  const bk    = S.quiz.sid ? `#/subject/${S.quiz.sid}` : '#/';
+  const done  = Q.ans[idx] !== undefined;
+  const bk    = Q.sid ? `#/subject/${Q.sid}` : '#/';
+
+  let answered = 0;
+  for (let i = 0; i < total; i++) if (Q.ans[i] !== undefined) answered++;
 
   const choiceLayout = q.choices.length <= 2 ? 'style="flex-direction:row;flex-wrap:wrap;"' : '';
   const choices = q.choices.map((c,i) => {
     let cls = 'choice-btn', dis = '';
-    if (phase === 'a') {
+    if (done) {
       dis = 'disabled';
-      const chosen = S.quiz.ans[idx];
-      if      (i === q.answer) cls += ' correct';
-      else if (i === chosen)   cls += ' wrong';
+      if      (i === q.answer)    cls += ' correct';
+      else if (i === Q.ans[idx])  cls += ' wrong';
     }
     return `
       <button class="${cls}" ${dis} onclick="answerQ(${i})">
@@ -822,58 +1196,115 @@ function renderQuizQ(noAnim = false) {
       </button>`;
   }).join('');
 
-  const explain = (phase==='a' && q.explanation)
+  const explain = (done && q.explanation)
     ? `<div class="explain-box">${q.explanation}</div>` : '';
 
-  const isLast = idx+1 >= total;
-  const nxtBtn = phase==='a'
-    ? `<button class="next-btn" id="nxt">${isLast?'結果を見る →':'次の問題 →'}</button>` : '';
+  const isLast   = idx + 1 >= total;
+  const nxtLabel = done ? (isLast ? '結果を見る →' : '次の問題 →')
+                        : (isLast ? '結果を見る'   : 'スキップ →');
+
+  const cells = data.questions.map((qq, i) => {
+    const a   = Q.ans[i];
+    const cls = ['qn', i === idx ? 'cur' : '', a === undefined ? '' : (a === qq.answer ? 'ok' : 'ng')]
+                  .filter(Boolean).join(' ');
+    return `<button class="${cls}" data-q="${i}" aria-label="問${i+1}"${i === idx ? ' aria-current="true"' : ''}>${i+1}</button>`;
+  }).join('');
 
   app.innerHTML = `
     <div class="quiz-wrap">
       <button class="back-btn" onclick="location.hash='${bk}'">← 戻る</button>
       <div class="quiz-meta">
-        <div class="quiz-title">${data.title}</div>
+        <div class="quiz-title">${data.title || 'クイズ'}</div>
         <div class="prog-bar"><div class="prog-fill" style="width:${(idx+1)/total*100}%"></div></div>
-        <div class="prog-text">${idx+1} / ${total} 問</div>
+        <div class="prog-text">${idx+1} / ${total} 問　回答済み ${answered}</div>
       </div>
+
+      <div class="quiz-tools">
+        <div class="jump">
+          <label for="jump-input">問題番号へ</label>
+          <input type="number" id="jump-input" min="1" max="${total}" value="${idx+1}" inputmode="numeric" />
+          <button class="tool-btn" id="jump-go">移動</button>
+        </div>
+        <div class="tool-spacer"></div>
+        <button class="tool-btn" id="nav-toggle" aria-expanded="${!!Q.navOpen}">${Q.navOpen ? '一覧 ▴' : '一覧 ▾'}</button>
+        <button class="tool-btn" id="dl-btn" title="オフライン版プレーヤー用のJSONを保存">⬇ JSON</button>
+      </div>
+
+      <div class="qnav" id="qnav" ${Q.navOpen ? '' : 'hidden'}>
+        <div class="qnav-grid">${cells}</div>
+        <div class="qnav-foot">
+          <span class="lg ok"><i></i>正解</span>
+          <span class="lg ng"><i></i>不正解</span>
+          <span class="lg"><i></i>未回答</span>
+          <button class="tool-btn" id="goto-result">結果を見る</button>
+        </div>
+      </div>
+
       <div class="quiz-card${noAnim ? ' no-anim' : ''}">
         <div class="q-text">Q${idx+1}. ${q.question}</div>
         <div class="choices" ${choiceLayout}>${choices}</div>
         ${explain}
       </div>
-      ${nxtBtn}
+
+      <div class="nav-row">
+        <button class="prev-btn" id="prv" ${idx === 0 ? 'disabled' : ''}>← 前へ</button>
+        <button class="next-btn${done ? '' : ' skip'}" id="nxt">${nxtLabel}</button>
+      </div>
     </div>`;
 
-  document.getElementById('nxt')?.addEventListener('click', nextQ);
+  document.getElementById('nxt').addEventListener('click', nextQ);
+  document.getElementById('prv').addEventListener('click', () => gotoQ(idx - 1));
+  document.getElementById('dl-btn').addEventListener('click', () => downloadQuiz(Q.file));
+
+  // ── 番号ジャンプ ──
+  const input  = document.getElementById('jump-input');
+  const doJump = () => {
+    const n = parseInt(input.value, 10);
+    if (isNaN(n)) { toast(`1〜${total} の番号を入力してください`); input.value = idx + 1; return; }
+    if (n < 1 || n > total) toast(`1〜${total} の範囲で入力してください`);
+    gotoQ(Math.min(total, Math.max(1, n)) - 1);
+  };
+  document.getElementById('jump-go').addEventListener('click', doJump);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); doJump(); } });
+  input.addEventListener('focus', () => input.select());
+
+  // ── 一覧パネル ──
+  const tgl = document.getElementById('nav-toggle');
+  const pnl = document.getElementById('qnav');
+  tgl.addEventListener('click', () => {
+    Q.navOpen = !Q.navOpen;
+    pnl.hidden = !Q.navOpen;
+    tgl.setAttribute('aria-expanded', String(Q.navOpen));
+    tgl.textContent = Q.navOpen ? '一覧 ▴' : '一覧 ▾';
+  });
+  pnl.querySelectorAll('.qn').forEach(b => b.addEventListener('click', () => gotoQ(+b.dataset.q)));
+  document.getElementById('goto-result').addEventListener('click', () => fade(renderResult));
 }
 
 function answerQ(i) {
-  if (S.quiz.phase !== 'q') return;
+  if (S.quiz.ans[S.quiz.idx] !== undefined) return;
   S.quiz.ans[S.quiz.idx] = i;
-  S.quiz.phase = 'a';
   renderQuizQ(true);
   renderMath();
 }
 
+function gotoQ(i) {
+  const total = S.quiz.data.questions.length;
+  S.quiz.idx = Math.max(0, Math.min(total - 1, i));
+  renderQuizQ();
+  renderMath();
+  window.scrollTo({ top: 0 });
+}
+
 function nextQ() {
-  if (S.quiz.idx+1 >= S.quiz.data.questions.length) {
-    fade(renderResult);
-    return;
-  }
+  const Q = S.quiz;
+  if (Q.idx + 1 >= Q.data.questions.length) { fade(renderResult); return; }
   const card = document.querySelector('.quiz-card');
   if (card) {
     card.classList.add('leaving');
-    setTimeout(() => {
-      S.quiz.idx++;
-      S.quiz.phase = 'q';
-      renderQuizQ();
-      renderMath();
-    }, 180);
+    setTimeout(() => gotoQ(Q.idx + 1), 180);
   } else {
-    S.quiz.idx++;
-    S.quiz.phase = 'q';
-    fade(renderQuizQ);
+    gotoQ(Q.idx + 1);
   }
 }
 
@@ -881,12 +1312,19 @@ function nextQ() {
    RESULT
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 function renderResult() {
-  const { data, ans, file, sid } = S.quiz;
+  const Q = S.quiz;
+  const { data, ans } = Q;
+  const { file, sid } = Q;
+  const bk = sid ? `#/subject/${sid}` : '#/';
   const total = data.questions.length;
-  const score = ans.filter((a,i) => a === data.questions[i].answer).length;
-  const pct   = Math.round(score/total*100);
-  const bk    = sid ? `#/subject/${sid}` : '#/';
-  const [emoji,msg] =
+  let score = 0, answered = 0, firstBlank = -1;
+  data.questions.forEach((q, i) => {
+    if (ans[i] === undefined) { if (firstBlank < 0) firstBlank = i; }
+    else { answered++; if (ans[i] === q.answer) score++; }
+  });
+  const blank = total - answered;
+  const pct   = Math.round(score / total * 100);
+  const [emoji, msg] =
     pct===100 ? ['🎉','パーフェクト！完璧です！'] :
     pct>=80   ? ['👏','よくできました！'] :
     pct>=60   ? ['💪','もう少しで完璧！'] :
@@ -897,19 +1335,26 @@ function renderResult() {
       <div class="result-card">
         <div class="result-emoji bounce">${emoji}</div>
         <div class="result-score"><span id="r-score">0</span><span class="result-denom"> / ${total}</span></div>
-        <div class="result-pct">${pct}% 正解</div>
+        <div class="result-pct">${pct}% 正解${blank ? `　未回答 ${blank} 問` : ''}</div>
         <div class="result-msg">${msg}</div>
         <div class="result-acts">
           <button class="btn-fill"  id="r-retry">もう一度挑戦</button>
-          <button class="btn-ghost" id="r-back" >教材一覧に戻る</button>
+          ${blank ? '<button class="btn-ghost" id="r-blank">未回答の問題へ</button>' : ''}
+          <button class="btn-ghost" id="r-review">見直す</button>
+          <button class="btn-ghost" id="r-back">教材一覧に戻る</button>
         </div>
       </div>
     </div>`;
 
   animateCount(document.getElementById('r-score'), score, 750);
-  document.getElementById('r-retry').addEventListener('click', () => { S.quiz=null; fade(()=>loadQuiz(file)); });
-  document.getElementById('r-back' ).addEventListener('click', () => go(bk));
+  document.getElementById('r-retry').addEventListener('click', () => {
+    S.quiz = null; fade(() => loadQuiz(file));
+  });
+  document.getElementById('r-blank')?.addEventListener('click', () => fade(() => gotoQ(firstBlank)));
+  document.getElementById('r-review').addEventListener('click', () => fade(() => gotoQ(0)));
+  document.getElementById('r-back').addEventListener('click', () => go(bk));
 }
+
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    VIEWER
@@ -985,6 +1430,268 @@ function renderTerms() {
         <p>本規約に関するご質問は、本サイト運営者までお問い合わせください。</p>
       </div>
     </div>`;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Quiz data cache / JSON download
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const esc = s => String(s ?? '')
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+async function fetchQuizText(file) {
+  if (S.quizText[file]) return S.quizText[file];
+  const res = await fetch(file);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const text = await res.text();
+  S.quizText[file] = text;
+  return text;
+}
+
+async function getQuiz(file) {
+  if (S.quizCache[file]) return S.quizCache[file];
+  const text = await fetchQuizText(file);
+  const data = JSON.parse(text);
+  if (!data || !Array.isArray(data.questions) || !data.questions.length)
+    throw new Error('questions 配列が見つかりません');
+  S.quizCache[file] = data;
+  return data;
+}
+
+function baseName(file) {
+  let n = file.split('?')[0].split('/').pop() || 'quiz.json';
+  try { n = decodeURIComponent(n); } catch {}
+  return /\.json$/i.test(n) ? n : n + '.json';
+}
+
+async function downloadQuiz(file) {
+  try {
+    const text = await fetchQuizText(file);
+    const blob = new Blob([text], { type: 'application/json;charset=utf-8' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href = url;
+    a.download = baseName(file);
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500);
+    toast(`${baseName(file)} を保存しました`);
+  } catch (e) {
+    toast('ダウンロードに失敗しました');
+  }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Toast
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+let _toastT;
+function toast(msg) {
+  const el = document.getElementById('toast');
+  if (!el) return;
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_toastT);
+  _toastT = setTimeout(() => el.classList.remove('show'), 2200);
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   SEARCH
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const SQ = { q: '', scope: null };
+
+// 全角→半角・カタカナ→ひらがな・小文字化（文字数を変えないので位置がずれない）
+function fold(s) {
+  s = String(s ?? '');
+  let o = '';
+  for (let i = 0; i < s.length; i++) {
+    let c = s.charCodeAt(i);
+    if      (c >= 0xFF01 && c <= 0xFF5E) c -= 0xFEE0;
+    else if (c >= 0x30A1 && c <= 0x30F6) c -= 0x60;
+    else if (c === 0x3000)               c = 0x20;
+    const ch = String.fromCharCode(c);
+    const lo = ch.toLowerCase();
+    o += lo.length === 1 ? lo : ch;
+  }
+  return o;
+}
+
+// 数式記号・タグを外した表示用テキスト
+function plain(s) {
+  return String(s ?? '')
+    .replace(/<[^>]*>/g, '')
+    .replace(/\$+/g, '')
+    .replace(/\\[\[\]()]/g, '')
+    .replace(/\\/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function hl(text, terms) {
+  if (!terms.length) return esc(text);
+  const f = fold(text);
+  const marks = new Array(text.length).fill(false);
+  terms.forEach(t => {
+    let p = f.indexOf(t);
+    while (p >= 0) {
+      for (let k = p; k < p + t.length; k++) marks[k] = true;
+      p = f.indexOf(t, p + t.length);
+    }
+  });
+  let out = '', open = false;
+  for (let i = 0; i < text.length; i++) {
+    if (marks[i] && !open)  { out += '<mark>'; open = true; }
+    if (!marks[i] && open)  { out += '</mark>'; open = false; }
+    out += esc(text[i]);
+  }
+  return out + (open ? '</mark>' : '');
+}
+
+function snippet(text, terms, len = 88) {
+  const f = fold(text);
+  let pos = -1;
+  terms.forEach(t => { const p = f.indexOf(t); if (p >= 0 && (pos < 0 || p < pos)) pos = p; });
+  const start = pos > 30 ? pos - 30 : 0;
+  const s = text.slice(start, start + len);
+  return (start > 0 ? '…' : '') + hl(s, terms) + (start + len < text.length ? '…' : '');
+}
+
+function searchScopeMats() {
+  return (S.subjects || [])
+    .filter(s => !SQ.scope || s.id === SQ.scope)
+    .flatMap(s => (s.materials || []).map(m => ({ s, m })));
+}
+
+function searchAll(terms) {
+  const mats = [], qs = [];
+  searchScopeMats().forEach(({ s, m }) => {
+    const meta = [s.name, m.group].filter(Boolean).join(' ');
+    const hay  = fold(plain(`${meta} ${m.title}`));
+    if (terms.every(t => hay.includes(t))) mats.push({ s, m });
+
+    const data = m.type === 'quiz' ? S.quizCache[m.file] : null;
+    if (!data) return;
+    const hits = [];
+    data.questions.forEach((q, i) => {
+      const fq = plain(q.question);
+      const fc = plain((q.choices || []).join(' ／ '));
+      const fe = plain(q.explanation || '');
+      const all = fold(`${fq} ${fc} ${fe}`);
+      if (terms.every(t => all.includes(t))) hits.push({ i, fq, fc, fe });
+    });
+    if (hits.length) qs.push({ s, m, hits });
+  });
+  return { mats, qs };
+}
+
+function renderSearchResults() {
+  const box    = document.getElementById('search-results');
+  const status = document.getElementById('search-status');
+  if (!box || !status) return;
+
+  const quizzes = searchScopeMats().filter(x => x.m.type === 'quiz');
+  const pending = quizzes.filter(x => !S.quizCache[x.m.file] && !S.quizFail[x.m.file]).length;
+  const failed  = quizzes.filter(x => S.quizFail[x.m.file]).length;
+  const note = (pending ? `　（問題文を読み込み中… 残り ${pending}）` : '')
+             + (failed  ? `　（${failed} 件のクイズは読み込めませんでした）` : '');
+
+  const terms = fold(SQ.q).split(/\s+/).filter(Boolean);
+  if (!terms.length) {
+    box.innerHTML = '';
+    status.textContent = '教材名・グループ名・問題文・選択肢・解説から探します。スペースで区切ると AND 検索になります。' + note;
+    return;
+  }
+
+  const { mats, qs } = searchAll(terms);
+  const nQ = qs.reduce((a, x) => a + x.hits.length, 0);
+  status.textContent = `教材 ${mats.length} 件 ／ 問題 ${nQ} 問${note}`;
+
+  if (!mats.length && !nQ) {
+    box.innerHTML = `<div class="error-box">「${esc(SQ.q.trim())}」に一致するものはありません。別のキーワードで試してください。</div>`;
+    return;
+  }
+
+  let html = '';
+  if (mats.length) {
+    html += `<div class="mat-section"><div class="mat-label">教材</div><div class="mat-list">` +
+      mats.slice(0, 40).map(({ s, m }) => {
+        const dest = m.type === 'quiz' ? `#/quiz/${m.file}` : `#/view/${m.file}`;
+        const meta = [s.name, m.group].filter(Boolean).join(' › ');
+        return `
+        <div class="mat-item">
+          <span class="mat-icon">${T_ICON[m.type] || '📎'}</span>
+          <span class="mat-title">${hl(plain(m.title), terms)}<small>${esc(meta)}</small></span>
+          <button class="open-btn" data-go="${esc(dest)}">開く</button>
+        </div>`;
+      }).join('') + `</div></div>`;
+  }
+
+  if (nQ) {
+    const CAP = 60;
+    let shown = 0;
+    html += `<div class="mat-section"><div class="mat-label">問題</div>`;
+    qs.forEach(({ s, m, hits }) => {
+      if (shown >= CAP) return;
+      const take = hits.slice(0, CAP - shown);
+      shown += take.length;
+      const meta = [s.name, m.group].filter(Boolean).join(' › ');
+      html += `<div class="s-quiz"><div class="s-quiz-head"><span>✏️</span><b>${esc(plain(m.title))}</b><span class="s-meta">${esc(meta)}</span></div>` +
+        take.map(h => {
+          const qAll = terms.every(t => fold(h.fq).includes(t));
+          const subs = [];
+          if (!qAll) {
+            if (terms.some(t => fold(h.fc).includes(t))) subs.push(['選択肢', h.fc]);
+            if (terms.some(t => fold(h.fe).includes(t))) subs.push(['解説', h.fe]);
+          }
+          return `<button class="s-hit" data-go="${esc(`#/quiz/${m.file}?q=${h.i + 1}`)}">
+            <span class="s-qn">Q${h.i + 1}</span>
+            <span class="s-txt">${snippet(h.fq, terms)}${subs.map(([l, t]) => `<small>${l}: ${snippet(t, terms, 70)}</small>`).join('')}</span>
+          </button>`;
+        }).join('') + `</div>`;
+    });
+    if (nQ > shown) html += `<p class="search-more">ほか ${nQ - shown} 問あります。キーワードを絞り込んでください。</p>`;
+    html += `</div>`;
+  }
+  box.innerHTML = html;
+}
+
+function renderSearch(scopeId) {
+  if (!S.subjects || !S.subjects.length) { renderHome(); return; }
+  const sc = scopeId ? S.subjects.find(s => s.id === scopeId) : null;
+  SQ.scope = sc ? sc.id : null;
+
+  app.innerHTML = `
+    <div class="search-wrap">
+      <button class="back-btn" data-go="${sc ? `#/subject/${esc(sc.id)}` : '#/'}">← 戻る</button>
+      <div class="search-box">
+        <span aria-hidden="true">🔍</span>
+        <input id="search-input" type="search" enterkeyhint="search" autocomplete="off" spellcheck="false"
+               placeholder="教材名・問題文・解説を検索" aria-label="検索" value="${esc(SQ.q)}" />
+      </div>
+      ${sc ? `<div class="scope-chip">${sc.icon || '📚'} ${esc(sc.name)} のみ<button data-go="#/search" aria-label="教科の絞り込みを解除">×</button></div>` : ''}
+      <div class="search-status" id="search-status" aria-live="polite"></div>
+      <div id="search-results"></div>
+    </div>`;
+
+  const inp = document.getElementById('search-input');
+  let t;
+  inp.addEventListener('input', () => {
+    SQ.q = inp.value;
+    clearTimeout(t);
+    t = setTimeout(renderSearchResults, 120);
+  });
+  inp.addEventListener('keydown', e => { if (e.key === 'Enter') inp.blur(); });
+  inp.focus();
+  inp.setSelectionRange(inp.value.length, inp.value.length);
+
+  // クイズの中身を（未取得のものだけ）読み込んで検索対象にする
+  searchScopeMats().filter(x => x.m.type === 'quiz').forEach(({ m }) => {
+    if (S.quizCache[m.file] || S.quizFail[m.file] || S.inflight[m.file]) return;
+    S.inflight[m.file] = true;
+    getQuiz(m.file)
+      .catch(() => { S.quizFail[m.file] = true; })
+      .finally(() => { delete S.inflight[m.file]; renderSearchResults(); });
+  });
+  renderSearchResults();
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
