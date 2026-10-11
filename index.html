@@ -859,6 +859,62 @@
       .dl-text { display: none; }
       .jump input { width: 56px; }
     }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       UPDATE — 手書き問題（type: "write"）
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .w-hint { font-size: .78rem; color: var(--ink-2); margin: 2px 0 4px; }
+    .wbox-row { display: flex; flex-wrap: wrap; gap: 12px; margin: 14px 0 4px; }
+    .wcell { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .wbox {
+      position: relative;
+      aspect-ratio: 1;
+      max-width: 100%;
+      border: 2px solid var(--line);
+      border-radius: 10px;
+      overflow: hidden;
+      background:
+        linear-gradient(to right,  transparent calc(50% - .5px), #E4DFD8 calc(50% - .5px), #E4DFD8 calc(50% + .5px), transparent calc(50% + .5px)),
+        linear-gradient(to bottom, transparent calc(50% - .5px), #E4DFD8 calc(50% - .5px), #E4DFD8 calc(50% + .5px), transparent calc(50% + .5px)),
+        #fff;
+      transition: border-color .14s;
+    }
+    .wbox canvas { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: none; cursor: crosshair; }
+    .wbox.locked canvas { cursor: default; }
+    .wbox.active { border-color: var(--accent); }
+    .wbox.ok { border-color: var(--ok); }
+    .wbox.ng { border-color: var(--ng); }
+    .wbox-no {
+      position: absolute; top: 5px; left: 8px;
+      font-family: 'Space Grotesk', sans-serif; font-size: .7rem; color: #B9B2A8;
+      pointer-events: none;
+    }
+    .wcap { font-size: .74rem; color: var(--ink-2); min-height: 1.2em; text-align: center; }
+    .w-actions { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+    .w-check {
+      background: var(--accent); color: #fff; border-radius: 20px;
+      padding: 7px 20px; font-size: .86rem; font-weight: 700; transition: opacity .14s;
+    }
+    .w-check:hover { opacity: .85; }
+    .w-actions button:disabled { opacity: .45; cursor: default; }
+    .w-accept { font-size: .76rem; color: var(--ink-2); display: inline-flex; align-items: center; gap: 5px; }
+    .w-accept select {
+      font: inherit; font-size: .78rem; color: var(--ink);
+      border: 1px solid var(--line); border-radius: 8px; padding: 3px 6px; background: var(--surface);
+    }
+    .w-status { font-size: .78rem; color: var(--ink-2); margin-top: 10px; line-height: 1.7; }
+    .w-answer {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-top: 14px; padding: 12px 16px;
+      background: var(--bg); border: 1px solid var(--line); border-radius: var(--r);
+    }
+    .w-answer-label { font-size: .74rem; font-weight: 700; color: var(--ink-2); }
+    .w-answer-text  { font-size: 1.5rem; font-weight: 700; letter-spacing: .06em; }
+    .w-judge { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 12px; font-size: .78rem; color: var(--ink-2); }
+    .tool-btn.on-ok { border-color: var(--ok); color: var(--ok); background: #F0FAF3; font-weight: 700; }
+    .tool-btn.on-ng { border-color: var(--ng); color: var(--ng); background: #FEF2F2; font-weight: 700; }
+    .footer-credit { margin-left: auto; font-size: .72rem; }
+    .footer-credit a { color: inherit; text-underline-offset: 3px; }
   </style>
 </head>
 <body>
@@ -890,6 +946,7 @@
 <footer class="site-footer">
   <span>© <span id="footer-year"></span> EbonySerpent</span>
   <button class="footer-terms-link" onclick="go('#/terms')">利用規約</button>
+  <span class="footer-credit">手書き認識: <a href="https://github.com/asdfjkl/kanjicanvas" target="_blank" rel="noopener">Kanji Canvas</a> © Dominik Klein (MIT)</span>
 </footer>
 
 <script>
@@ -1164,6 +1221,7 @@ async function loadQuiz(file, startIdx = null) {
   try {
     const data = await getQuiz(file);
     S.quiz = { data, file, sid: subjectOf(file)?.id || null, idx: 0, ans: [], navOpen: false };
+    if (data.questions.some(q => q.type === 'write')) Recog.preload();
     if (startIdx !== null && !isNaN(startIdx))
       S.quiz.idx = Math.max(0, Math.min(data.questions.length - 1, startIdx));
     fadeIn(renderQuizQ);
@@ -1184,8 +1242,10 @@ function renderQuizQ(noAnim = false) {
   let answered = 0;
   for (let i = 0; i < total; i++) if (Q.ans[i] !== undefined) answered++;
 
-  const choiceLayout = q.choices.length <= 2 ? 'style="flex-direction:row;flex-wrap:wrap;"' : '';
-  const choices = q.choices.map((c,i) => {
+  const isWrite = q.type === 'write';
+  const D = isWrite ? getDraft(Q, idx) : null;
+  const choiceLayout = (!isWrite && q.choices.length <= 2) ? 'style="flex-direction:row;flex-wrap:wrap;"' : '';
+  const choices = isWrite ? '' : q.choices.map((c,i) => {
     let cls = 'choice-btn', dis = '';
     if (done) {
       dis = 'disabled';
@@ -1199,7 +1259,7 @@ function renderQuizQ(noAnim = false) {
       </button>`;
   }).join('');
 
-  const explain = (done && q.explanation)
+  const explain = ((done || (isWrite && D.checked)) && q.explanation)
     ? `<div class="explain-box">${q.explanation}</div>` : '';
 
   const isLast   = idx + 1 >= total;
@@ -1208,7 +1268,7 @@ function renderQuizQ(noAnim = false) {
 
   const cells = data.questions.map((qq, i) => {
     const a   = Q.ans[i];
-    const cls = ['qn', i === idx ? 'cur' : '', a === undefined ? '' : (a === qq.answer ? 'ok' : 'ng')]
+    const cls = ['qn', i === idx ? 'cur' : '', a === undefined ? '' : (isRight(qq, a) ? 'ok' : 'ng')]
                   .filter(Boolean).join(' ');
     return `<button class="${cls}" data-q="${i}" aria-label="問${i+1}"${i === idx ? ' aria-current="true"' : ''}>${i+1}</button>`;
   }).join('');
@@ -1246,7 +1306,7 @@ function renderQuizQ(noAnim = false) {
 
       <div class="quiz-card${noAnim ? ' no-anim' : ''}">
         <div class="q-text">Q${idx+1}. ${q.question}</div>
-        <div class="choices" ${choiceLayout}>${choices}</div>
+        ${isWrite ? writeCardHTML(q, idx, D) : `<div class="choices" ${choiceLayout}>${choices}</div>`}
         ${explain}
       </div>
 
@@ -1256,6 +1316,7 @@ function renderQuizQ(noAnim = false) {
       </div>
     </div>`;
 
+  if (isWrite) mountWrite(Q, idx);
   document.getElementById('nxt').addEventListener('click', nextQ);
   document.getElementById('prv').addEventListener('click', () => gotoQ(idx - 1));
   document.getElementById('dl-btn').addEventListener('click', () => downloadQuiz(Q.file));
@@ -1325,7 +1386,7 @@ function renderResult() {
   let score = 0, answered = 0, firstBlank = -1;
   data.questions.forEach((q, i) => {
     if (ans[i] === undefined) { if (firstBlank < 0) firstBlank = i; }
-    else { answered++; if (ans[i] === q.answer) score++; }
+    else { answered++; if (isRight(q, ans[i])) score++; }
   });
   const blank = total - answered;
   const pct   = Math.round(score / total * 100);
@@ -1435,6 +1496,275 @@ function renderTerms() {
         <p>本規約に関するご質問は、本サイト運営者までお問い合わせください。</p>
       </div>
     </div>`;
+}
+
+/* ── 手書き認識エンジン（Kanji Canvas を Web Worker で実行）── */
+const Recog = (() => {
+  let worker = null, failed = false, supported = null, nextId = 1;
+  const pending = new Map();
+  let readyRes; const ready = new Promise(r => { readyRes = r; });
+
+  function start() {
+    if (worker || failed) return;
+    try {
+      worker = new Worker('hw/recognizer-worker.js');
+      worker.onmessage = e => {
+        const m = e.data;
+        if (m.type === 'ready') { supported = new Set(m.chars); readyRes(true); }
+        else if (m.type === 'result') { const p = pending.get(m.id); if (p) { pending.delete(m.id); p(m.cands); } }
+      };
+      worker.onerror = () => {
+        failed = true; readyRes(false);
+        pending.forEach(p => p(null)); pending.clear();
+      };
+    } catch { failed = true; readyRes(false); }
+  }
+  return {
+    get available() { return !failed; },
+    preload: start,
+    ready,
+    supports: ch => !!supported && supported.has(ch),
+    recognize(strokes) {
+      start();
+      if (failed) return Promise.resolve(null);
+      return new Promise(res => {
+        const id = nextId++;
+        pending.set(id, res);
+        ready.then(ok => { if (!ok) { pending.delete(id); res(null); } else worker.postMessage({ id, strokes }); });
+      });
+    },
+  };
+})();
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   手書き問題（type: "write"）
+   白い枠に書いた字を認識して、answer と合っているか判定する。
+   認識エンジンが無い環境では、答えを見て自分で○×をつける。
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+const HW = {
+  accept: (() => {
+    try { const n = parseInt(localStorage.getItem('hw-accept'), 10); return [1, 3, 5].includes(n) ? n : 3; }
+    catch { return 3; }
+  })(),
+};
+
+const hwEsc = s => String(s ?? '')
+  .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+
+// 正誤判定（選択問題は番号、手書き問題は {ok} オブジェクト）
+function isRight(q, a) {
+  if (a === undefined) return false;
+  return q.type === 'write' ? !!(a && a.ok) : a === q.answer;
+}
+
+function wChars(q) { return Array.from(String(q.answer ?? '').replace(/\s+/g, '')); }
+
+function getDraft(Q, i) {
+  if (!Q.drafts) Q.drafts = [];
+  if (!Q.drafts[i]) {
+    Q.drafts[i] = {
+      boxes: wChars(Q.data.questions[i]).map(() => ({ strokes: [], cands: null, ver: 0, recVer: -1 })),
+      checked: false, checking: false, results: null, engineOk: false,
+    };
+  }
+  return Q.drafts[i];
+}
+
+// 1つの書き込み欄にペン入力をつなぐ。座標は 0〜256 の正方形に正規化して box.strokes に積む
+function hwAttach(cv, box, isLocked, onStart, onEnd) {
+  const ctx = cv.getContext('2d');
+  const W = cv.width, k = W / 256, INK = '#1c1b1f';
+  const setLine = () => { ctx.lineWidth = 15; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = INK; ctx.fillStyle = INK; };
+  const clamp = v => Math.max(0, Math.min(256, v));
+  const pt = e => {
+    const r = cv.getBoundingClientRect();
+    return [clamp((e.clientX - r.left) / r.width * 256), clamp((e.clientY - r.top) / r.height * 256)];
+  };
+
+  function redraw() {
+    ctx.clearRect(0, 0, W, W);
+    setLine();
+    box.strokes.forEach(s => {
+      ctx.beginPath();
+      s.forEach(([x, y], i) => i ? ctx.lineTo(x * k, y * k) : ctx.moveTo(x * k, y * k));
+      ctx.stroke();
+    });
+  }
+
+  let cur = null, pid = null;
+  cv.addEventListener('pointerdown', e => {
+    if (isLocked() || pid !== null) return;
+    if (e.pointerType === 'mouse' && e.button !== 0) return;
+    e.preventDefault();
+    pid = e.pointerId;
+    try { cv.setPointerCapture(pid); } catch {}
+    cur = [pt(e)];
+    setLine(); ctx.beginPath(); ctx.arc(cur[0][0] * k, cur[0][1] * k, 7.5, 0, Math.PI * 2); ctx.fill();
+    onStart && onStart();
+  });
+  cv.addEventListener('pointermove', e => {
+    if (e.pointerId !== pid || !cur) return;
+    const evs = e.getCoalescedEvents ? e.getCoalescedEvents() : [];
+    for (const ev of (evs.length ? evs : [e])) {
+      const p = pt(ev), last = cur[cur.length - 1];
+      if (Math.hypot(p[0] - last[0], p[1] - last[1]) < 1.2) continue;
+      cur.push(p);
+      setLine(); ctx.beginPath(); ctx.moveTo(last[0] * k, last[1] * k); ctx.lineTo(p[0] * k, p[1] * k); ctx.stroke();
+    }
+  });
+  const end = e => {
+    if (e.pointerId !== pid) return;
+    pid = null;
+    if (!cur) return;
+    if (cur.length === 1) cur.push([cur[0][0] + .3, cur[0][1]]);   // 点（てん）
+    box.strokes.push(cur); box.ver++;
+    cur = null;
+    redraw();
+    onEnd && onEnd();
+  };
+  cv.addEventListener('pointerup', end);
+  cv.addEventListener('pointercancel', e => { if (e.pointerId === pid) { pid = null; cur = null; redraw(); } });
+  return { redraw };
+}
+
+// 認識（書いた直後に先回りして計算しておく。結果は box.cands に入る）
+function hwRecognize(box) {
+  if (!box.strokes.length) return Promise.resolve([]);
+  if (!Recog.available)    return Promise.resolve(null);
+  if (box.recVer === box.ver)  return Promise.resolve(box.cands);
+  if (box.pendVer === box.ver) return box.pend;
+  const v = box.ver;
+  box.pendVer = v;
+  box.pend = Recog.recognize(box.strokes).then(c => {
+    if (c !== null && box.ver === v) { box.cands = c; box.recVer = v; }
+    return c;
+  });
+  return box.pend;
+}
+function hwSchedule(box) { clearTimeout(box.t); box.t = setTimeout(() => hwRecognize(box), 700); }
+
+function writeCardHTML(q, idx, D) {
+  const Q = S.quiz;
+  const chars = wChars(q);
+  const a = Q.ans[idx], done = a !== undefined;
+  const avail = Math.min((app.clientWidth || 360) - 64, 560);
+  const size  = Math.max(84, Math.min(190, Math.floor((avail - 12 * (chars.length - 1)) / chars.length)));
+  const pass  = r => r.rank >= 0 && r.rank < HW.accept;
+
+  const cells = chars.map((c, i) => {
+    const r   = D.results && D.results[i];
+    const cls = r && D.engineOk ? (pass(r) ? ' ok' : ' ng') : '';
+    const cap = (D.checked && r && D.engineOk) ? `${pass(r) ? '○' : '×'} 認識: ${hwEsc(r.top.join(' ')) || '—'}` : '';
+    return `<div class="wcell">
+        <div class="wbox${cls}${D.checked ? ' locked' : ''}" data-b="${i}" style="width:${size}px">
+          <canvas width="512" height="512" role="img" aria-label="${i + 1}文字目の書き込み欄"></canvas>
+          <span class="wbox-no">${i + 1}</span>
+        </div>
+        <div class="wcap">${cap}</div>
+      </div>`;
+  }).join('');
+
+  let tail = '';
+  if (!D.checked) {
+    const opt = (n, label) => `<option value="${n}"${HW.accept === n ? ' selected' : ''}>${label}</option>`;
+    tail = `
+      <div class="w-actions">
+        <button class="tool-btn" id="w-undo">↶ 1画戻す</button>
+        <button class="tool-btn" id="w-clear">全部消す</button>
+        <span class="tool-spacer"></span>
+        ${Recog.available ? `<label class="w-accept">判定 <select id="w-accept">${opt(5,'ゆるい')}${opt(3,'ふつう')}${opt(1,'きびしい')}</select></label>` : ''}
+        <button class="tool-btn" id="w-giveup">わからない</button>
+        <button class="w-check" id="w-check">答え合わせ</button>
+      </div>
+      <div class="w-status" id="w-status">${Recog.available ? '' : 'この環境では手書き認識を使えません。書いたあとで答えを見て、自分で○×をつけます。'}</div>`;
+  } else {
+    tail = `
+      <div class="w-answer"><span class="w-answer-label">正解</span><span class="w-answer-text">${hwEsc(q.answer)}</span></div>
+      <div class="w-judge">
+        <span>${D.engineOk ? '自動判定（直せます）' : '自分で判定'}</span>
+        <button class="tool-btn${done && a.ok ? ' on-ok' : ''}"  data-j="1">○ 合ってた</button>
+        <button class="tool-btn${done && !a.ok ? ' on-ng' : ''}" data-j="0">× 違った</button>
+      </div>
+      ${D.engineOk ? '<div class="w-status">手書き認識はまちがえることがあります。実際は合っていた・違っていた場合は、上のボタンで直してください。</div>'
+                   : (!done ? '<div class="w-status">この問題は自動判定できません。答えを見て、自分で判定してください。</div>' : '')}`;
+  }
+  return `<div class="w-hint">✍️ 手書き問題　白い枠に1文字ずつ書こう（${chars.length}文字）</div>
+      <div class="wbox-row" id="wbox-row">${cells}</div>${tail}`;
+}
+
+function mountWrite(Q, idx) {
+  const D   = getDraft(Q, idx);
+  const row = document.getElementById('wbox-row');
+  if (!row) return;
+  let active = Math.max(0, D.boxes.map(b => b.strokes.length > 0).lastIndexOf(true));
+  const els = row.querySelectorAll('.wbox');
+
+  els.forEach((el, i) => {
+    const box = D.boxes[i];
+    const h = hwAttach(el.querySelector('canvas'), box,
+      () => D.checked || D.checking,
+      () => { active = i; els.forEach(x => x.classList.remove('active')); el.classList.add('active'); },
+      () => hwSchedule(box));
+    box.redraw = h.redraw;
+    h.redraw();
+  });
+
+  document.querySelectorAll('.w-judge [data-j]').forEach(b =>
+    b.addEventListener('click', () => judgeWrite(idx, b.dataset.j === '1')));
+  if (D.checked) return;
+
+  Recog.preload();
+  const $ = id => document.getElementById(id);
+  $('w-undo').addEventListener('click', () => {
+    const b = D.boxes[active];
+    if (!b || !b.strokes.length) return;
+    b.strokes.pop(); b.ver++; b.redraw(); hwSchedule(b);
+  });
+  $('w-clear').addEventListener('click', () => {
+    D.boxes.forEach(b => { b.strokes = []; b.ver++; b.cands = null; b.recVer = -1; b.redraw(); });
+  });
+  $('w-giveup').addEventListener('click', () => giveUpWrite(idx));
+  $('w-check').addEventListener('click', () => checkWrite(idx));
+  $('w-accept')?.addEventListener('change', e => {
+    HW.accept = +e.target.value;
+    try { localStorage.setItem('hw-accept', String(HW.accept)); } catch {}
+  });
+}
+
+async function checkWrite(idx) {
+  const Q = S.quiz, q = Q.data.questions[idx], D = getDraft(Q, idx);
+  if (D.checked || D.checking) return;
+  if (D.boxes.every(b => !b.strokes.length)) { toast('先に書いてみよう'); return; }
+
+  D.checking = true;
+  const st = document.getElementById('w-status');
+  if (st) st.textContent = '判定中…（初回は認識データを読み込むので少し時間がかかります）';
+  document.querySelectorAll('.w-actions button, .w-actions select').forEach(b => { b.disabled = true; });
+
+  const chars = wChars(q);
+  const res   = await Promise.all(D.boxes.map(hwRecognize));
+  const engineOk = Recog.available && res.every(r => r !== null) && chars.every(c => Recog.supports(c));
+
+  D.results  = chars.map((c, i) => { const cands = res[i] || []; return { rank: cands.indexOf(c), top: cands.slice(0, 3) }; });
+  D.engineOk = engineOk;
+  D.checking = false;
+  D.checked  = true;
+  if (engineOk) Q.ans[idx] = { ok: D.results.every(r => r.rank >= 0 && r.rank < HW.accept), auto: true };
+
+  if (S.quiz === Q && Q.idx === idx) { renderQuizQ(true); renderMath(); }
+}
+
+function giveUpWrite(idx) {
+  const Q = S.quiz, D = getDraft(Q, idx);
+  if (D.checked || D.checking) return;
+  D.checked = true; D.results = null; D.engineOk = false;
+  Q.ans[idx] = { ok: false, auto: false, gaveUp: true };
+  renderQuizQ(true); renderMath();
+}
+
+function judgeWrite(idx, ok) {
+  S.quiz.ans[idx] = { ok, auto: false };
+  renderQuizQ(true); renderMath();
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1612,10 +1942,10 @@ function searchAll(terms) {
     const hits = [];
     data.questions.forEach((q, i) => {
       const fq = plain(q.question);
-      const fc = plain((q.choices || []).join(' ／ '));
+      const fc = plain(q.type === 'write' ? `答え ${q.answer}` : (q.choices || []).join(' ／ '));
       const fe = plain(q.explanation || '');
       const all = fold(`${fq} ${fc} ${fe}`);
-      if (terms.every(t => all.includes(t))) hits.push({ i, fq, fc, fe });
+      if (terms.every(t => all.includes(t))) hits.push({ i, fq, fc, fe, w: q.type === 'write' });
     });
     if (hits.length) qs.push({ s, m, hits });
   });
@@ -1678,7 +2008,7 @@ function renderSearchResults() {
           const qAll = terms.every(t => fold(h.fq).includes(t));
           const subs = [];
           if (!qAll) {
-            if (terms.some(t => fold(h.fc).includes(t))) subs.push(['選択肢', h.fc]);
+            if (terms.some(t => fold(h.fc).includes(t))) subs.push([h.w ? '答え' : '選択肢', h.fc]);
             if (terms.some(t => fold(h.fe).includes(t))) subs.push(['解説', h.fe]);
           }
           return `<button class="s-hit" data-go="${esc(`#/quiz/${m.file}?q=${h.i + 1}`)}">
