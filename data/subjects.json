@@ -138,9 +138,9 @@
           "file": "data/japanese/山に行く心_漢字.png"
         },
         {
-          "type": "write", 
-          "question": "test_beta", 
-          "answer": "data/japanese/sample_quiz_write.json" 
+          "type": "quiz", 
+          "title": "test_beta", 
+          "file": "data/japanese/sample_quiz_write.json" 
         }
       ]
     },
