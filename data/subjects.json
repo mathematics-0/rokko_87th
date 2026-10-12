@@ -136,6 +136,11 @@
           "type": "image",
           "title": "山に行く心・漢字",
           "file": "data/japanese/山に行く心_漢字.png"
+        },
+        {
+          "type": "write", 
+          "question": "「かんさつ」を漢字で書きましょう。", 
+          "answer": "観察" 
         }
       ]
     },
