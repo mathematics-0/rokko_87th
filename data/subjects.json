@@ -54,7 +54,13 @@
       "name": "化学",
       "icon": "🧪",
       "color": "#059669",
-      "materials": []
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "2学期中間",
+          "file": "data/chemistry/quiz_chemistry_basic_1.json"
+        }
+      ]
     },
     {
       "id": "biology",
