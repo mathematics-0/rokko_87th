@@ -91,6 +91,46 @@
           "type": "pdf",
           "title": "1学期期末",
           "file": "data/history/江戸幕府の成立_赤シート_ノート形式.pdf"
+        },
+        { 
+          "type": "quiz",
+          "title": "2学期中間 江戸① 身分・産業", 
+          "file": "data/social/quiz_edo_1_mibun_sangyo.json",
+          "group": "江戸時代" 
+        },
+        { "type": "quiz", 
+          "title": "2学期中間 江戸② 三都・幕政の改革", 
+          "file": "data/social/quiz_edo_2_santo_kaikaku.json", 
+          "group": "江戸時代" 
+        },
+        { 
+          "type": "quiz", 
+          "title": "2学期中間 江戸③ 農村・ききん・町人文化",
+          "file": "data/social/quiz_edo_3_noson_kikin_bunka.json", 
+          "group": "江戸時代" 
+        },
+        { 
+          "type": "quiz", 
+          "title": "2学期中間 江戸④ 学問",
+          "file": "data/social/quiz_edo_4_gakumon.json", 
+          "group": "江戸時代"
+        },
+        { "type": "quiz", 
+          "title": "2学期中間 江戸 人物", 
+          "file": "data/social/quiz_edo_people.json", 
+          "group": "江戸時代（人物・漢字）" 
+        },
+        { 
+          "type": "quiz", 
+          "title": "2学期中間 江戸 漢字（用語）", 
+          "file": "data/social/quiz_edo_kanji_terms.json", 
+          "group": "江戸時代（人物・漢字）"
+        },
+        { 
+          "type": "quiz",
+          "title": "2学期中間 江戸 漢字（人名）", 
+          "file": "data/social/quiz_edo_kanji_people.json", 
+          "group": "江戸時代（人物・漢字）" 
         }
       ]
     },
