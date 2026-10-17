@@ -184,9 +184,10 @@
           "file": "data/japanese/山に行く心_漢字.png"
         },
         {
-          "type": "quiz", 
-          "title": "test_beta", 
-          "file": "data/japanese/sample_quiz_write.json" 
+          "type": "quiz",
+          "title": "贈り物と商品の違い：準2級以上の漢字",
+          "file": "data/japanese/quiz_okurimono_kanji.json",
+          "group": "第3章 ことばで伝える思いと考え"
         }
       ]
     },
