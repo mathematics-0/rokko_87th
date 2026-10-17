@@ -1,0 +1,294 @@
+{
+  "title": "江戸 漢字（用語）",
+  "description": "手書きで用語を書いて覚えよう",
+  "questions": [
+    {
+      "type": "write",
+      "question": "軍役を負担した、人々を支配する身分は？（ぶし）",
+      "answer": "武士",
+      "explanation": "武士は軍役を負担した。"
+    },
+    {
+      "type": "write",
+      "question": "村に住む百姓が負担した税は？（ねんぐ）",
+      "answer": "年貢",
+      "explanation": "百姓は年貢を負担した。"
+    },
+    {
+      "type": "write",
+      "question": "町に住み、町人役を負担した身分は？（ちょうにん）",
+      "answer": "町人",
+      "explanation": "町人は町人役を負担した。"
+    },
+    {
+      "type": "write",
+      "question": "身分制度の裏づけとなった儒学は？（しゅしがく）",
+      "answer": "朱子学",
+      "explanation": "朱子学（儒学）の思想。"
+    },
+    {
+      "type": "write",
+      "question": "明治の初めに出された、身分をなくす法令は？（みぶんかいほうれい）",
+      "answer": "身分解放令",
+      "explanation": "その後も差別は続いた。"
+    },
+    {
+      "type": "write",
+      "question": "大規模に新たな田を開くこと（しんでんかいはつ）",
+      "answer": "新田開発",
+      "explanation": "新田開発で米が増産された。"
+    },
+    {
+      "type": "write",
+      "question": "川や堤防の水を治める技術（ちすい）",
+      "answer": "治水",
+      "explanation": "治水技術の発達。"
+    },
+    {
+      "type": "write",
+      "question": "湖や海を陸地にすること（かんたく）",
+      "answer": "干拓",
+      "explanation": "湖・海の干拓。"
+    },
+    {
+      "type": "write",
+      "question": "脱穀に使う農具（せんばこき）",
+      "answer": "千歯こき",
+      "explanation": "千歯こきは脱穀の農具。"
+    },
+    {
+      "type": "write",
+      "question": "購入する肥料（きんぴ）",
+      "answer": "金肥",
+      "explanation": "金肥は効果が大きい。"
+    },
+    {
+      "type": "write",
+      "question": "売るために栽培する作物（しょうひんさくもつ）",
+      "answer": "商品作物",
+      "explanation": "木綿・菜種・紅花など。"
+    },
+    {
+      "type": "write",
+      "question": "染料になる花（べにばな）",
+      "answer": "紅花",
+      "explanation": "紅花は染料の原料。"
+    },
+    {
+      "type": "write",
+      "question": "油がとれる作物（なたね）",
+      "answer": "菜種",
+      "explanation": "菜種は油の原料。"
+    },
+    {
+      "type": "write",
+      "question": "長崎から中国へ輸出された海産物（たわらもの）",
+      "answer": "俵物",
+      "explanation": "干しあわびなど。"
+    },
+    {
+      "type": "write",
+      "question": "金銀にかわり、輸出された金属の鉱山（どうざん）",
+      "answer": "銅山",
+      "explanation": "銅の開発が進んだ。"
+    },
+    {
+      "type": "write",
+      "question": "江戸・大阪・京都をまとめて（さんと）",
+      "answer": "三都",
+      "explanation": "幕府が支配した。"
+    },
+    {
+      "type": "write",
+      "question": "大名が年貢米を売るために大阪につくった施設（くらやしき）",
+      "answer": "蔵屋敷",
+      "explanation": "年貢米を売り送金した。"
+    },
+    {
+      "type": "write",
+      "question": "朝廷のある都市（きょうと）",
+      "answer": "京都",
+      "explanation": "西陣織・京焼の産地。"
+    },
+    {
+      "type": "write",
+      "question": "京都の高級織物（にしじんおり）",
+      "answer": "西陣織",
+      "explanation": "京都の高級品。"
+    },
+    {
+      "type": "write",
+      "question": "大名が江戸と国元を往復する制度（さんきんこうたい）",
+      "answer": "参勤交代",
+      "explanation": "上げ米の代わりにゆるめられた。"
+    },
+    {
+      "type": "write",
+      "question": "幕府の財政が苦しいこと（ざいせいなん）",
+      "answer": "財政難",
+      "explanation": "享保の改革の背景。"
+    },
+    {
+      "type": "write",
+      "question": "元禄時代に行われた、貨幣を作り直すこと（かいちゅう）",
+      "answer": "改鋳",
+      "explanation": "物価高が進んだ。"
+    },
+    {
+      "type": "write",
+      "question": "年貢率を一定にする法（じょうめんほう）",
+      "answer": "定免法",
+      "explanation": "享保の改革。"
+    },
+    {
+      "type": "write",
+      "question": "漢方薬の原料となる作物（ちょうせんにんじん）",
+      "answer": "朝鮮人参",
+      "explanation": "享保の改革で奨励。"
+    },
+    {
+      "type": "write",
+      "question": "商人の同業者組合（かぶなかま）",
+      "answer": "株仲間",
+      "explanation": "田沼が結成をすすめた。"
+    },
+    {
+      "type": "write",
+      "question": "株仲間から取った営業税（うんじょう）",
+      "answer": "運上",
+      "explanation": "運上。"
+    },
+    {
+      "type": "write",
+      "question": "幕府が商品を独占して売ること（せんばい）",
+      "answer": "専売",
+      "explanation": "幕府による専売。"
+    },
+    {
+      "type": "write",
+      "question": "将軍に次いで政治を行う役職（ろうじゅう）",
+      "answer": "老中",
+      "explanation": "田沼意次・松平定信など。"
+    },
+    {
+      "type": "write",
+      "question": "ききんに備え米を貯蓄する政策（かこいまい）",
+      "answer": "囲米",
+      "explanation": "寛政の改革。"
+    },
+    {
+      "type": "write",
+      "question": "江戸でききんに備えて積み立てた制度（しちぶつみきん）",
+      "answer": "七分積金",
+      "explanation": "寛政の改革。"
+    },
+    {
+      "type": "write",
+      "question": "本百姓が分かれた、土地を持つ人（じぬし）",
+      "answer": "地主",
+      "explanation": "地主・小作の分解。"
+    },
+    {
+      "type": "write",
+      "question": "土地を借りて耕す人（こさくにん）",
+      "answer": "小作人",
+      "explanation": "小作人。"
+    },
+    {
+      "type": "write",
+      "question": "ききんで民衆が商人の家をこわすこと（うちこわし）",
+      "answer": "打ちこわし",
+      "explanation": "打ちこわし。"
+    },
+    {
+      "type": "write",
+      "question": "浅間山の噴火が冷害の原因となったききん（てんめい）",
+      "answer": "天明",
+      "explanation": "天明のききん。"
+    },
+    {
+      "type": "write",
+      "question": "井原西鶴らの小説（うきよぞうし）",
+      "answer": "浮世草子",
+      "explanation": "元禄文化の小説。"
+    },
+    {
+      "type": "write",
+      "question": "松尾芭蕉の文芸（はいかい）",
+      "answer": "俳諧",
+      "explanation": "奥の細道。"
+    },
+    {
+      "type": "write",
+      "question": "18世紀後半から19世紀前半の江戸中心の文化（かせいぶんか）",
+      "answer": "化政文化",
+      "explanation": "化政文化。"
+    },
+    {
+      "type": "write",
+      "question": "上方の町人を中心とした文化（げんろくぶんか）",
+      "answer": "元禄文化",
+      "explanation": "元禄文化。"
+    },
+    {
+      "type": "write",
+      "question": "多色刷りの浮世絵（にしきえ）",
+      "answer": "錦絵",
+      "explanation": "錦絵。"
+    },
+    {
+      "type": "write",
+      "question": "当時の社会をえがいた絵（うきよえ）",
+      "answer": "浮世絵",
+      "explanation": "浮世絵。"
+    },
+    {
+      "type": "write",
+      "question": "オランダ語を通じて学ぶ西洋の学問（らんがく）",
+      "answer": "蘭学",
+      "explanation": "蘭学。"
+    },
+    {
+      "type": "write",
+      "question": "古代人の精神を探究する学問（こくがく）",
+      "answer": "国学",
+      "explanation": "国学。"
+    },
+    {
+      "type": "write",
+      "question": "日本独自の数学（わさん）",
+      "answer": "和算",
+      "explanation": "和算。"
+    },
+    {
+      "type": "write",
+      "question": "杉田玄白らが翻訳した医学書（かいたいしんしょ）",
+      "answer": "解体新書",
+      "explanation": "解体新書。"
+    },
+    {
+      "type": "write",
+      "question": "宮崎安貞の農書（のうぎょうぜんしょ）",
+      "answer": "農業全書",
+      "explanation": "農業全書。"
+    },
+    {
+      "type": "write",
+      "question": "杉田玄白の回想録（らんがくことはじめ）",
+      "answer": "蘭学事始",
+      "explanation": "蘭学事始。"
+    },
+    {
+      "type": "write",
+      "question": "シーボルトが長崎に開いた塾（なるたきじゅく）",
+      "answer": "鳴滝塾",
+      "explanation": "鳴滝塾。"
+    },
+    {
+      "type": "write",
+      "question": "緒方洪庵が大阪で開いた塾（てきじゅく）",
+      "answer": "適塾",
+      "explanation": "適塾。"
+    }
+  ]
+}

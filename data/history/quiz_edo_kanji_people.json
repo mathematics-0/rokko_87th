@@ -1,0 +1,108 @@
+{
+  "title": "江戸 漢字（人名）",
+  "description": "人物の名前を手書きで覚えよう",
+  "questions": [
+    {
+      "type": "write",
+      "question": "5代将軍で生類憐みの令を出した人物（とくがわつなよし）",
+      "answer": "徳川綱吉",
+      "explanation": "徳川綱吉"
+    },
+    {
+      "type": "write",
+      "question": "8代将軍で享保の改革を行った人物（とくがわよしむね）",
+      "answer": "徳川吉宗",
+      "explanation": "徳川吉宗"
+    },
+    {
+      "type": "write",
+      "question": "江戸に入り、幕府を開いた人物（とくがわいえやす）",
+      "answer": "徳川家康",
+      "explanation": "徳川家康"
+    },
+    {
+      "type": "write",
+      "question": "10代将軍家治の老中で商業を重視した人物（たぬまおきつぐ）",
+      "answer": "田沼意次",
+      "explanation": "田沼意次"
+    },
+    {
+      "type": "write",
+      "question": "寛政の改革を行った老中（まつだいらさだのぶ）",
+      "answer": "松平定信",
+      "explanation": "松平定信"
+    },
+    {
+      "type": "write",
+      "question": "大阪で乱を起こした人物（おおしおへいはちろう）",
+      "answer": "大塩平八郎",
+      "explanation": "大塩平八郎"
+    },
+    {
+      "type": "write",
+      "question": "「日本永代蔵」の作者（いはらさいかく）",
+      "answer": "井原西鶴",
+      "explanation": "井原西鶴"
+    },
+    {
+      "type": "write",
+      "question": "「風神雷神図屏風」の作者（たわらやそうたつ）",
+      "answer": "俵屋宗達",
+      "explanation": "俵屋宗達"
+    },
+    {
+      "type": "write",
+      "question": "「南総里見八犬伝」の作者（たきざわばきん）",
+      "answer": "滝沢馬琴",
+      "explanation": "滝沢馬琴"
+    },
+    {
+      "type": "write",
+      "question": "「東海道中膝栗毛」の作者（じっぺんしゃいっく）",
+      "answer": "十返舎一九",
+      "explanation": "十返舎一九"
+    },
+    {
+      "type": "write",
+      "question": "「富嶽三十六景」の作者（かつしかほくさい）",
+      "answer": "葛飾北斎",
+      "explanation": "葛飾北斎"
+    },
+    {
+      "type": "write",
+      "question": "「東海道五十三次」の作者（うたがわひろしげ）",
+      "answer": "歌川広重",
+      "explanation": "歌川広重"
+    },
+    {
+      "type": "write",
+      "question": "「農業全書」の作者（みやざきやすさだ）",
+      "answer": "宮崎安貞",
+      "explanation": "宮崎安貞"
+    },
+    {
+      "type": "write",
+      "question": "「解体新書」を訳した医者（すぎたげんぱく）",
+      "answer": "杉田玄白",
+      "explanation": "杉田玄白"
+    },
+    {
+      "type": "write",
+      "question": "「解体新書」を訳した医者（まえのりょうたく）",
+      "answer": "前野良沢",
+      "explanation": "前野良沢"
+    },
+    {
+      "type": "write",
+      "question": "日本全国を測量した人物（いのうただたか）",
+      "answer": "伊能忠敬",
+      "explanation": "伊能忠敬"
+    },
+    {
+      "type": "write",
+      "question": "国学を大成した人物（もとおりのりなが）",
+      "answer": "本居宣長",
+      "explanation": "本居宣長"
+    }
+  ]
+}
