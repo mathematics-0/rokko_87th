@@ -861,6 +861,36 @@
     }
 
     /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+       UPDATE — オフライン版カード（ホーム）
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+    .offline-card {
+      margin-top: 34px;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--r);
+      padding: 20px 22px;
+    }
+    .offline-head { display: flex; gap: 14px; align-items: center; }
+    .offline-emoji { font-size: 1.7rem; }
+    .offline-title { font-weight: 700; font-size: 1rem; }
+    .offline-sub   { font-size: .8rem; color: var(--ink-2); margin-top: 2px; }
+    .offline-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+    .offline-actions a.tool-btn { text-decoration: none; display: inline-block; }
+    .offline-size { font-size: .74rem; color: var(--ink-2); }
+    .offline-help { margin-top: 14px; border-top: 1px solid var(--line); padding-top: 12px; }
+    .offline-help summary { cursor: pointer; font-size: .86rem; font-weight: 700; user-select: none; }
+    .offline-help ol, .offline-help ul { margin: 10px 0 0; padding-left: 1.4em; font-size: .84rem; line-height: 1.85; }
+    .offline-help h4 { font-size: .78rem; margin: 16px 0 0; color: var(--ink-2); }
+    .offline-help li { margin-bottom: 4px; }
+    .offline-help code { font-size: .78rem; background: var(--bg); border-radius: 4px; padding: 1px 5px; }
+    .offline-fallback { margin-top: 14px; font-size: .8rem; line-height: 1.7; }
+    .offline-fallback textarea {
+      width: 100%; margin-top: 6px; font-family: monospace; font-size: .72rem;
+      border: 1px solid var(--line); border-radius: 8px; padding: 8px; resize: vertical;
+      background: var(--bg); color: var(--ink);
+    }
+
+    /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
        UPDATE — 手書き問題（type: "write"）
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
     .w-hint { font-size: .78rem; color: var(--ink-2); margin: 2px 0 4px; }
@@ -1136,7 +1166,8 @@ function renderHome() {
 
   app.innerHTML = `
     <button class="home-search" data-go="#/search"><span aria-hidden="true">🔍</span><span>教材・問題を検索</span><kbd>/</kbd></button>
-    <div class="page-title">教科を選択</div><div class="subjects-grid">${cards}</div>`;
+    <div class="page-title">教科を選択</div><div class="subjects-grid">${cards}</div>${offlineCardHTML()}`;
+  mountOfflineCard();
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1210,6 +1241,7 @@ function renderSubject(id) {
 
   app.querySelectorAll('details.group').forEach(d =>
     d.addEventListener('toggle', () => { S.closed[d.dataset.gkey] = !d.open; }));
+  mats.filter(m => m.type === 'quiz').forEach(m => fetchQuizText(m.file).catch(() => {}));
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1496,6 +1528,100 @@ function renderTerms() {
         <p>本規約に関するご質問は、本サイト運営者までお問い合わせください。</p>
       </div>
     </div>`;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   オフライン版 → データURL（ホームのカード）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+function offlineCardHTML() {
+  return `
+    <section class="offline-card" aria-labelledby="offline-title">
+      <div class="offline-head">
+        <span class="offline-emoji" aria-hidden="true">📴</span>
+        <div>
+          <div class="offline-title" id="offline-title">オフライン版を使う</div>
+          <div class="offline-sub">サーバーなしで動くクイズ画面を、アドレスバーに貼り付けるだけで開けます</div>
+        </div>
+      </div>
+      <div class="offline-actions">
+        <button class="w-check" id="off-copy">データURLをコピー</button>
+        <a class="tool-btn" href="quiz-offline.html" download="quiz-offline.html">HTMLファイルを保存</a>
+        <span class="offline-size" id="off-size"></span>
+      </div>
+      <div class="offline-fallback" id="off-fallback" hidden>
+        自動でコピーできませんでした。下の文字列をすべて選択してコピーしてください。
+        <textarea id="off-text" rows="3" readonly aria-label="データURL"></textarea>
+      </div>
+      <details class="offline-help">
+        <summary>使い方・注意点</summary>
+        <h4>開くまで</h4>
+        <ol>
+          <li>「データURLをコピー」を押します。</li>
+          <li>ブラウザで<strong>新しいタブ</strong>を開き、アドレスバーに貼り付けて移動（Enter）します。</li>
+          <li>オフライン版の画面が出たら、<strong>ブックマーク</strong>（またはホーム画面に追加）しておくと、次からはそれを開くだけで使えます。</li>
+        </ol>
+        <h4>問題データの入れ方</h4>
+        <ol>
+          <li>ネットにつながっているうちに、使いたいクイズの <code>⬇ JSON</code> を押して保存します。</li>
+          <li>オフライン版で「ファイルを選択」を押し、保存した JSON を選ぶと出題が始まります。</li>
+        </ol>
+        <h4>注意点</h4>
+        <ul>
+          <li>データURLは長い文字列です。LINE などのメッセージで送ると途中で切れることがあります。人に渡すときは「HTMLファイルを保存」を使ってください。</li>
+          <li>ブラウザや端末によっては、アドレスバーの <code>data:</code> が開けないことがあります（学校の管理端末など）。その場合は「HTMLファイルを保存」して、そのファイルを開いてください。</li>
+          <li>数式（<code>$…$</code>）と文字のフォントは外部から読み込みます。完全に通信が無い状態では、数式が記号のまま表示されることがあります。</li>
+          <li>オフライン版では手書き認識は使えません。手書き問題は、答えを見て自分で○×をつけます。</li>
+          <li>成績は保存されません。画面を閉じると結果は消えます。</li>
+        </ul>
+      </details>
+    </section>`;
+}
+
+// 'quiz-offline.html' を読み込んで data:text/html;base64,… に変換（UTF-8 のまま）
+async function prepareOfflineUrl() {
+  if (S.offlineUrl) return S.offlineUrl;
+  if (!S.offlinePromise) {
+    S.offlinePromise = (async () => {
+      const res = await fetch('quiz-offline.html', { cache: 'no-cache' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const bytes = new TextEncoder().encode(await res.text());
+      let bin = '';
+      for (let i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      S.offlineUrl = 'data:text/html;charset=utf-8;base64,' + btoa(bin);
+      return S.offlineUrl;
+    })().catch(e => { S.offlinePromise = null; throw e; });
+  }
+  return S.offlinePromise;
+}
+
+function mountOfflineCard() {
+  const btn = document.getElementById('off-copy');
+  if (!btn) return;
+  const size = document.getElementById('off-size');
+  const showSize = url => { if (size && url) size.textContent = `データURLの長さ: 約 ${Math.round(url.length / 1024)} KB`; };
+  prepareOfflineUrl().then(showSize).catch(() => {});   // 先に作っておく（押した直後にコピーするため）
+
+  const showFallback = url => {
+    const box = document.getElementById('off-fallback'), ta = document.getElementById('off-text');
+    if (!box || !ta) return;
+    ta.value = url; box.hidden = false; ta.focus(); ta.select();
+  };
+
+  btn.addEventListener('click', async () => {
+    let url = S.offlineUrl;
+    if (!url) {
+      toast('準備中です…');
+      try { url = await prepareOfflineUrl(); showSize(url); }
+      catch { toast('オフライン版の読み込みに失敗しました（quiz-offline.html が見つかりません）'); return; }
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      toast('データURLをコピーしました。新しいタブのアドレスバーに貼り付けてください');
+    } catch {
+      showFallback(url);
+      try { if (document.execCommand('copy')) toast('データURLをコピーしました'); } catch {}
+    }
+  });
 }
 
 /* ── 手書き認識エンジン（Kanji Canvas を Web Worker で実行）── */
@@ -1820,11 +1946,13 @@ async function downloadQuiz(file) {
 async function shareQuiz(file) {
   const name = baseName(file);
   const link = `${location.href.split('#')[0]}#/quiz/${file}`;
-  let text;
-  try {
-    text = await fetchQuizText(file);
-  } catch {
-    toast('読み込みに失敗しました'); return;
+  // iPhone など、共有シートは「タップした直後」にしか開けない端末がある。
+  // そのため読み込み待ち(await)を挟まず、読み込み済みのときだけ直接開く。
+  const text = S.quizText[file];
+  if (!text) {
+    try { await fetchQuizText(file); toast('準備ができました。もう一度「共有」を押してください'); }
+    catch { toast('読み込みに失敗しました'); }
+    return;
   }
   try {
     if (navigator.share && navigator.canShare) {
@@ -1846,7 +1974,7 @@ async function shareQuiz(file) {
   } catch (e) {
     if (e && e.name === 'AbortError') return;                 // 共有シートを閉じただけ
     if (e && e.name === 'NotAllowedError') { toast('もう一度押してください'); return; }  // 読み込み待ちで操作の有効期限が切れた場合
-    toast('共有できませんでした。ダウンロードをお使いください');
+    toast(`共有できませんでした（${(e && e.name) || 'エラー'}）。ダウンロードをお使いください`);
   }
 }
 
