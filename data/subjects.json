@@ -67,7 +67,14 @@
       "name": "生物",
       "icon": "🌿",
       "color": "#16A34A",
-      "materials": []
+      "materials": [
+        {
+          "type": "quiz",
+          "title": "生物基礎 遺伝情報とタンパク質・体液と恒常性（総まとめ）",
+          "file": "data/biology/quiz_genetics_body_fluid.json",
+          "group": "第2章〜第3部"
+        }
+      ]
     },
     {
       "id": "info",
