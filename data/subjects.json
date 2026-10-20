@@ -159,6 +159,12 @@
           "type": "quiz",
           "title": "1学期期末 立山",
           "file": "data/civics/quiz_tateyama.json"
+        },
+        {
+          "type": "quiz",
+          "title": "公民(統治機構)裁判所・内閣",
+          "file": "data/social/quiz_governance.json",
+          "group": "統治機構"
         }
       ]
     },
