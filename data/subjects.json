@@ -163,7 +163,7 @@
         {
           "type": "quiz",
           "title": "公民(統治機構)裁判所・内閣",
-          "file": "data/social/quiz_governance.json",
+          "file": "data/civics/quiz_governance.json",
           "group": "統治機構"
         }
       ]
